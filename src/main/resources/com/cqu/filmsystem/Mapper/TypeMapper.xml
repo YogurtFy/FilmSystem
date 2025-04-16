@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.TypeMapper">
+
+    <resultMap id="TypeResultMap" type="Type">
+        <id property="genreId" column="genre_id" />
+        <result property="genreName" column="genre_name"/>
+        <result property="movieCount" column="movie_count"/>
+    </resultMap>
+
+
+
+    <select id="selectAllType" resultMap="TypeResultMap">
+        SELECT g.genre_id, g.genre_name, COUNT(mg.movice_id) AS movie_count
+        FROM genres g
+                 LEFT JOIN movie_genres mg ON g.genre_id = mg.genres_id
+        GROUP BY g.genre_id, g.genre_name
+        ORDER BY movie_count DESC;
+    </select>
+
+    <select id="selectByMoviceId" resultMap="TypeResultMap" parameterType="int">
+        SELECT g.genre_id,g.genre_name
+        FROM genres g
+        INNER JOIN movie_genres mg ON g.genre_id = mg.genres_id
+        WHERE mg.movice_id = #{id};
+    </select>
+
+    <insert id="insertMoviceType">
+        INSERT INTO movie_genres (movice_id,genres_id) VALUES (#{movieId}, #{genresId});
+    </insert>
+
+
+    <update id="updateMoviceType">
+        UPDATE movie_genres
+        SET movice_id=#{movieId},genres_id=#{genresId}
+        where movice_id=#{movieId}
+    </update>
+
+
+<!--        List<Type> selectAll(@Param("title") String title);
+
+    int add(Type type);
+
+    int update(Type type);
+
+    int delete(int id);
+
+    selectById
+-->
+
+
+    <select id="selectById" resultMap="TypeResultMap">
+        select * from genres where genre_id=#{id}
+    </select>
+
+
+    <select id="selectAll" resultMap="TypeResultMap">
+        select * from genres
+        <where>
+            <if test="title != null">
+                and genre_name like #{title}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add">
+        INSERT INTO genres (genre_name) VALUES (#{genreName});
+    </insert>
+
+    <insert id="addByMoviceIdTypeId">
+        INSERT INTO movie_genres (movice_id,genres_id) VALUES (#{id1},#{id2});
+    </insert>
+
+    <update id="update">
+        UPDATE genres
+        SET genre_name=#{genreName}
+        where genre_id=#{genreId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM genres
+        WHERE genre_id=#{id}
+    </delete>
+
+    <delete id="deleteByMoviceId">
+        DELETE FROM movie_genres
+        WHERE movice_id=#{id}
+    </delete>
+
+
+</mapper>

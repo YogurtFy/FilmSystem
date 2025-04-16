@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >电影推荐系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/static/css/me.css}">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/static/css/typo.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/static/css/animate.css}">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/static/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/static/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" href="../static/css/timeline.css" th:href="@{/static/css/timeline.css}">
+    <link rel="stylesheet" href="../static/css/ai-chat.css" th:href="@{/static/css/ai-chat.css}">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var addr = $("#headPortrait").html();
+            $("#img").attr("src", addr);
+        });
+
+        // 全局初始化AI对话功能
+        function initAiChat() {
+            console.log("初始化AI对话功能");
+            
+            // 确保AI对话窗口存在
+            if ($('#ai-chat-widget').length === 0) {
+                console.log("AI对话窗口不存在，重新添加");
+                $('body').append(`
+                    <div class="ai-chat-widget" id="ai-chat-widget" style="display: none;">
+                        <div class="ai-chat-header" id="ai-chat-header">
+                            <div class="ai-chat-title">AI 助手</div>
+                            <div class="ai-chat-controls">
+                                <i class="history icon view-history" title="查看历史对话"></i>
+                                <i class="plus icon new-chat" title="新建对话"></i>
+                                <i class="minus icon minimize-chat"></i>
+                                <i class="close icon close-chat"></i>
+                            </div>
+                        </div>
+                        <div class="message-panel" id="message-panel">
+                            <div class="message-list" id="message-list"></div>
+                        </div>
+                        <div class="send-panel">
+                            <form id="message-form">
+                                <div class="input-container">
+                                    <input type="text" id="message-input" placeholder="请输入你想问的问题" style="width: 100%; padding: 8px 7px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 4px;">
+                                </div>
+                                <div class="controls-row">
+                                    <select id="ai-model-select">
+                                        <option value="deepseek">Deepseek</option>
+                                        <option value="ultra">科大讯飞</option>
+                                    </select>
+                                    <button class="send-button" id="send-button">发送</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    <!-- 历史对话窗口 -->
+                    <div class="chat-history-modal" id="chat-history-modal" style="display: none;">
+                        <div class="chat-history-content">
+                            <div class="chat-history-header">
+                                <h3>历史对话</h3>
+                                <i class="close icon"></i>
+                            </div>
+                            <div class="chat-history-list">
+                                <!-- 历史对话将在这里动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }
+
+            const messageList = $('#message-list');
+            const messageInput = $('#message-input');
+            const sendButton = $('#send-button');
+            const aiChatWidget = $('#ai-chat-widget');
+            const historyModal = $('#chat-history-modal');
+            let currentChatId = new Date().getTime();
+
+            // 移除之前的事件绑定，防止重复
+            $(document).off('click', '#show-ai-chat');
+            $('.new-chat').off('click');
+            $('.view-history').off('click');
+            $('.chat-history-modal .close').off('click');
+            $('.minimize-chat').off('click');
+            $('.close-chat').off('click');
+            messageInput.off('input keydown');
+            $('#message-form').off('submit');
+
+            // 重新绑定事件
+            $(document).on('click', '#show-ai-chat', function(e) {
+                console.log("点击AI对话按钮");
+                e.preventDefault();
+                e.stopPropagation();
+                aiChatWidget.fadeIn();
+                return false;
+            });
+
+            // 新建对话
+            $(document).on('click', '.new-chat', function() {
+                messageList.empty();
+                currentChatId = new Date().getTime();
+            });
+
+            // 查看历史对话
+            $(document).on('click', '.view-history', function() {
+                historyModal.fadeIn();
+                loadHistory();
+            });
+
+            // 关闭历史对话窗口
+            $(document).on('click', '.chat-history-modal .close', function() {
+                historyModal.fadeOut();
+            });
+
+            // 最小化对话窗口
+            $(document).on('click', '.minimize-chat', function() {
+                aiChatWidget.slideUp();
+            });
+
+            // 关闭对话窗口
+            $(document).on('click', '.close-chat', function() {
+                aiChatWidget.fadeOut();
+            });
+
+            messageInput.on('input', function () {
+                sendButton.prop('disabled', $(this).val().trim() === '');
+            });
+
+            $('#message-form').on('submit', function (e) {
+                e.preventDefault();
+                const message = messageInput.val().trim();
+                if (message === '') return;
+
+                // 获取选择的AI模型
+                const selectedModel = $('#ai-model-select').val();
+
+                // 添加用户消息
+                messageList.append(`
+                    <div class="message-item">
+                        <div class="message-content">${message}</div>
+                        <div class="user-icon">我</div>
+                    </div>
+                `);
+
+                // 添加 AI 消息占位
+                const aiMessage = $(`
+                    <div class="message-item ai-item">
+                        <div class="user-icon">AI</div>
+                        <div class="message-content">
+                            <div class="loading">
+                                <img src="https://i.imgur.com/7r172Y6.gif" alt="Loading">
+                            </div>
+                        </div>
+                    </div>
+                `);
+                messageList.append(aiMessage);
+
+                // 滚动到消息底部
+                $('#message-panel').scrollTop($('#message-panel')[0].scrollHeight);
+
+                // 清空输入框
+                messageInput.val('');
+                sendButton.prop('disabled', true);
+
+                const eventSource = new EventSource(`/ai/chat?message=${encodeURIComponent(message)}&chatId=${currentChatId}&model=${selectedModel}`);
+                const aiResponseDiv = aiMessage.find('.message-content');
+                aiResponseDiv.empty();
+
+                eventSource.onmessage = function (event) {
+                    let response = event.data;
+                    if (response === 'end') {
+                        eventSource.close();
+                        aiMessage.find('.loading').remove();
+                        saveToHistory(currentChatId, messageList.html());
+                        return;
+                    }
+                    response = JSON.parse(response).content;
+                    aiResponseDiv.append(response);
+                    $('#message-panel').scrollTop($('#message-panel')[0].scrollHeight);
+                };
+
+                eventSource.onerror = function () {
+                    eventSource.close();
+                    aiMessage.find('.loading').remove();
+                    aiResponseDiv.append('<div>请求出错，请稍后重试</div>');
+                };
+            });
+
+            messageInput.on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    $('#message-form').submit();
+                }
+            });
+
+            // 点击历史对话项时加载对话内容
+            $(document).on('click', '.history-item', function() {
+                const chatId = $(this).data('chat-id');
+                const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
+                if (history[chatId]) {
+                    messageList.html(history[chatId].content);
+                    currentChatId = chatId;
+                    historyModal.fadeOut();
+                    $('#message-panel').scrollTop($('#message-panel')[0].scrollHeight);
+                }
+            });
+        }
+
+        // 保存对话历史的函数
+        function saveToHistory(chatId, content) {
+            let history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
+            history[chatId] = {
+                content: content,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('chatHistory', JSON.stringify(history));
+        }
+
+        // 加载历史对话的函数
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
+            const historyList = $('.chat-history-list');
+            historyList.empty();
+            
+            Object.entries(history).reverse().forEach(([chatId, data]) => {
+                const date = new Date(data.timestamp).toLocaleString();
+                const preview = data.content.substring(0, 100) + '...';
+                historyList.append(`
+                    <div class="history-item" data-chat-id="${chatId}">
+                        <div class="history-time">${date}</div>
+                        <div class="history-preview">${preview}</div>
+                    </div>
+                `);
+            });
+        }
+
+        // 在页面加载完成时初始化AI对话功能
+        $(document).ready(function() {
+            console.log("页面加载完成，初始化AI对话功能");
+            initAiChat();
+        });
+
+        // 监听页面内容变化，重新初始化AI对话功能
+        $(document).on('DOMSubtreeModified', '.ui.inverted.secondary.stackable.menu', function() {
+            console.log("菜单内容变化，重新初始化AI对话功能");
+            initAiChat();
+        });
+
+        // 监听页面切换事件
+        $(window).on('popstate', function() {
+            console.log("页面切换，重新初始化AI对话功能");
+            initAiChat();
+        });
+
+        // 监听AJAX请求完成事件
+        $(document).ajaxComplete(function() {
+            console.log("AJAX请求完成，重新初始化AI对话功能");
+            initAiChat();
+        });
+
+        // 监听URL变化
+        let lastUrl = location.href; 
+        new MutationObserver(() => {
+            const url = location.href;
+            if (url !== lastUrl) {
+                console.log("URL变化，重新初始化AI对话功能");
+                lastUrl = url;
+                initAiChat();
+            }
+        }).observe(document, {subtree: true, childList: true});
+    </script>
+</head>
+<body>
+
+
+<!--导航-->
+<div th:fragment="menu(n)">
+    <nav class="gird-header">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item" style="font-family: 'YaHei Consolas Hybrid';margin-left: 150px">
+                电影推荐</h2>
+            <a href="#"  th:href="@{/movice/showAll}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 1} ? 'active'"><i
+                    class="mini home icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">首页</span></a>
+            <a href="#" th:href="@{/type/showAll}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 2} ? 'active'"><i
+                    class="mini idea icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">分类</span></a>
+            <a href="#" th:href="@{/tag/showAll}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 5} ? 'active'"><i
+                    class="mini idea icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">标签</span></a>
+            <a href="#" th:href="@{/movice/selectFavorites}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 3} ? 'active'"><i
+                    class="mini tags icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">收藏夹</span></a>
+            <a href="#" th:href="@{/movice/history}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 4} ? 'active'"><i
+                    class="mini clone icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">观看历史</span></a>
+            <a href="javascript:void(0);" class="m-item item m-mobile-hide" id="show-ai-chat"
+               th:if="${session.user != null}"><i
+                    class="mini comment alternate icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">AI对话</span></a>
+<!--            <a href="#" th:href="@{/font/time/timeAxis}" class="m-item item m-mobile-hide"-->
+<!--               th:classappend="${n == 5} ? 'active'"><i-->
+<!--                    class="mini clock outline icon"></i>&nbsp;<span-->
+<!--                    style="font-size: 22px;font-family: 华文行楷">时间轴</span></a>-->
+            <!--<a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n == 6} ? 'active'"><i-->
+            <!--class="mini share square icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">我的收藏</span></a>-->
+<!--            <a href="#" th:href="@{/font/about/about}" class="m-item item m-mobile-hide"-->
+<!--               th:classappend="${n == 9} ? 'active'"><i-->
+<!--                    class="mini info icon"></i><span style="font-size: 22px;font-family: 华文行楷">关于本站</span></a>-->
+
+            <div class="right m-item item m-mobile-hide">
+                <form name="search" action="#" th:action="@{/type/showAll}" target="_blank" >
+                    <div class="ui icon inverted transparent input m-margin-tb-tiny">
+                        <input id="searchContent" type="text"  name="searchContent"
+                               placeholder="Search...."  th:value="${searchContent}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+
+
+            <a  class="m-item item m-mobile-hide" href="#" th:href="@{/user/login.html}" th:if="${session.user == null}" ><i
+                    class="mini shield alternate icon" style="color:red;font-size: 14px"></i><span
+                    style="font-size: 22px;font-family: 华文行楷;color: red">点击登录</span>
+            </a>
+
+            <div class="m-item m-ma see-hide menu" style="float: right;margin-right: 50px"  th:if="${session.user != null}">
+                <div class="ui dropdown  item">
+                    <div class="text" >
+                        <span style="display: none" id="headPortrait" th:text="${session.user.headPortrait}" >https://picsum.photos/id/319/35/35</span>
+                        <img class="ui avatar image" id="img"/>
+                        <span  th:text="${session.user.nickname}" >一友</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="/user/exit"  class="item">注销</a>
+                        <a href="/user/toupdateName"  class="item">修改昵称</a>
+                        <a href="/user/toupdatePassword"  class="item">修改密码</a>
+                        <a href="/admin/movice/" th:if="${session.user.roles[0].name == 'ROLE_ADMIN'}"  class="item">后台首页</a>
+                        <a href="/user/toupdateImage"  class="item">更换头像</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+    <br>
+    <br>
+    <br>
+</div>
+
+
+<!-- 底部 -->
+<footer class="ui inverted vertical segment m-padded-tb-massive m-opacity" th:fragment="footer">
+
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+
+
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/wechat.jpg" th:src="@{/static/images/wechat.jpg}" class="ui rounded image"
+                             alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">热点博文</h4>
+                <div id="hotBlogs">
+                    <div class="ui inverted link list" th:fragment="hotBlogs">
+                        <a href="#"  target="_blank" class="item m-text-thin" >用户故事（User Story）</a>
+                        <!--/*-->
+                        <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                        <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                        <!--*/-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" disabled="true" class="item m-text-thin">Email:<span >759230404@qq.com</span></a>
+                    <a href="#" disabled="true" class="item m-text-thin">QQ:<span>759230404</span></a>
+                </div>
+            </div>
+
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini" >
+                    这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2020 - <span>2020</span> &nbsp;CPP &nbsp;
+            Designed by mt</p>
+        <div style="width:300px;margin:0 auto; padding:1px 0; ">
+            <!--            <a target="_blank" href="http://www.beian.gov.cn" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img th:src="@{/images/1.png}" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#ff1c04;">桂公网安备</p></a>-->
+        </div>
+        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+
+        <script>
+            var now = new Date();
+
+            function createtime() {
+                var grt = new Date("03/10/2021 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                now.setTime(now.getTime() + 250);
+                days = (now - grt) / 1000 / 60 / 60 / 24;
+                dnum = Math.floor(days);
+                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                hnum = Math.floor(hours);
+                if (String(hnum).length == 1) {
+                    hnum = "0" + hnum;
+                }
+                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                mnum = Math.floor(minutes);
+                if (String(mnum).length == 1) {
+                    mnum = "0" + mnum;
+                }
+                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                snum = Math.round(seconds);
+                if (String(snum).length == 1) {
+                    snum = "0" + snum;
+                }
+                document.getElementById("timeDate").innerHTML = "本站已安全运行 " + dnum + " 天 ";
+                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+            }
+
+            setInterval("createtime()", 500);
+        </script>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+
+//        $(function () {
+//            $("#userInformation").load(/*[[@{/font/user/selectSessionUser}]]*/"/font/user/selectSessionUser");
+//        });
+
+    </script>
+</footer>
+
+<!-- AI聊天窗口 -->
+<div th:fragment="ai-chat" th:if="${session.user != null}">
+    <div class="ai-chat-widget" id="ai-chat-widget" style="display: none;">
+        <div class="ai-chat-header" id="ai-chat-header">
+            <div class="ai-chat-title">AI 助手</div>
+            <div class="ai-chat-controls">
+                <i class="history icon view-history" title="查看历史对话"></i>
+                <i class="plus icon new-chat" title="新建对话"></i>
+                <i class="minus icon minimize-chat"></i>
+                <i class="close icon close-chat"></i>
+            </div>
+        </div>
+        <div class="message-panel" id="message-panel">
+            <div class="message-list" id="message-list"></div>
+        </div>
+        <div class="send-panel">
+            <form id="message-form">
+                <div class="input-container">
+                    <input type="text" id="message-input" placeholder="请输入你想问的问题" style="width: 100%; padding: 8px 12px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 4px;">
+                </div>
+                <div class="controls-row">
+                    <select id="ai-model-select">
+                        <option value="deepseek">Deepseek</option>
+                        <option value="ultra">科大讯飞</option>
+                    </select>
+                    <button class="send-button" id="send-button">发送</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 历史对话窗口 -->
+    <div class="chat-history-modal" id="chat-history-modal" style="display: none;">
+        <div class="chat-history-content">
+            <div class="chat-history-header">
+                <h3>历史对话</h3>
+                <i class="close icon"></i>
+            </div>
+            <div class="chat-history-list">
+                <!-- 历史对话将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:fragment="script">
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    //头像下拉框
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+</script>
+</body>
+</html>

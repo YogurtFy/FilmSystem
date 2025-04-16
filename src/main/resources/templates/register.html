@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../static/css/regist.css" />
+	<!-- <link rel="stylesheet" href="css/iconfont.css" /> -->
+	<link rel="stylesheet" href="http://at.alicdn.com/t/c/font_3848518_wqv5e6x2sm9.css">
+	<title>注册界面</title>
+	
+</head>
+<body>
+	<div id="bigBoxRegist">
+		<h1>注册</h1>
+		
+		<div class="inputBox">
+
+		<form action="/user/register">
+			
+			<div class="inputText">
+				<span class="iconfont icon-yonghu"></span>
+				<input type="text"  name="email" placeholder="账号" />
+			</div>
+
+			
+			<div class="inputText">
+				<span class="iconfont icon-mima"></span>
+				<input type="password"  name="password" placeholder="密码" />
+			</div>
+			
+			<div class="inputText">
+				<span class="iconfont icon-mima"></span>
+				<input type="password"  name="passwordTow" placeholder="确定密码" />
+			</div>
+
+			<div class="inputText">
+				<span style="font-size: 12px; font-family: 宋; color: red; "  th:text="${tip}" ></span>
+			</div>
+
+			<div >
+				<input class="loginButton1" type="submit" value="提交" style="margin-top: 18px;" />
+				<a href="/user/login.html"><input class="loginButton1" type="button" value="返回" style="margin-top: 18px;" /></a>
+			</div>
+
+		</form>
+
+		</div>
+	
+	</div>
+
+	<script>
+
+		function init(){
+			const tip ="${tip}"
+			if (tip!=null)
+			{
+				alert(tip)
+			}
+		}
+	</script>
+</body>
+</html>
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.RemarksMapper">
+
+
+    <resultMap id="CommentResultMap" type="com.cqu.filmsystem.pojo.Comment">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+
+        <association column="parent_comment_id" javaType="Comment" property="parentComment" select="com.cqu.filmsystem.Mapper.RemarksMapper.selectById"></association>
+
+        <association column="user_id" javaType="com.cqu.filmsystem.pojo.UserInfo" property="userInfo">
+            <id column="uid" jdbcType="BIGINT" property="id"/>
+            <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+            <result column="email" jdbcType="VARCHAR" property="email"/>
+            <result column="head_portrait" jdbcType="VARCHAR" property="headPortrait"/>
+        </association>
+
+        <association column="movies_id" javaType="com.cqu.filmsystem.pojo.Movice" property="movice">
+            <id column="mid" jdbcType="BIGINT" property="id"/>
+            <id column="title" jdbcType="VARCHAR" property="title"/>
+            <id column="director" jdbcType="VARCHAR" property="director"/>
+            <id column="average_rating" jdbcType="VARCHAR" property="averageRating"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="selectComment" resultMap="CommentResultMap" >
+        select c.id, c.content, c.create_time, u.nickname, u.email, b.id as bid, b.title
+        from comment c
+        left join t_user u on c.user_id = u.id
+        left join movies b on c.movies_id = b.id
+        order by c.create_time DESC
+    </select>
+
+
+    <select id="selectByBlogIdAndParentCommentIsNull" resultMap="CommentResultMap" parameterType="Integer">
+        select c.id, c.content, c.create_time, u.id as uid, u.nickname, u.head_portrait
+        from comment c left join t_user u on c.user_id = u.id
+        where c.movies_id = #{id} and parent_comment_id is null order by c.create_time DESC
+    </select>
+
+
+    <select id="selectById" resultMap="CommentResultMap" parameterType="Integer">
+        select c.id, c.content, c.create_time, u.id as uid, u.nickname, u.head_portrait
+        from comment c left join t_user u on c.user_id = u.id
+        where c.id = #{id}
+    </select>
+
+
+    <select id="selectByParentId" resultMap="CommentResultMap" parameterType="Integer">
+        select c.id, c.content, c.create_time, u.id as uid, u.nickname, u.head_portrait
+        from comment c left join t_user u on c.user_id = u.id
+        where c.parent_comment_id = #{parentId} order by c.create_time
+    </select>
+
+
+
+    <select id="selectAll" resultMap="CommentResultMap">
+        select c.id, c.content, c.create_time, u.nickname, u.email, b.id as bid, b.title
+        from comment c
+        left join t_user u on c.user_id = u.id
+        left join movies b on c.movies_id = b.id
+        <where>
+            <if test="content != null">
+                and c.content like #{content}
+            </if>
+            <if test="email != null">
+                and u.nickname like #{email}
+            </if>
+        </where>
+        order by c.create_time DESC
+    </select>
+
+
+
+<!--    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+<!--        delete from t_comment-->
+<!--        where id = #{id,jdbcType=INTEGER}-->
+<!--    </delete>-->
+
+    <insert id="insert" parameterType="Comment">
+        insert into comment (id, content, create_time,parent_comment_id, user_id,movies_id
+        )
+        values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{parentComment.id,jdbcType=BIGINT}, #{userInfo.id,jdbcType=BIGINT},#{movice.id,jdbcType=INTEGER}
+               )
+    </insert>
+
+
+
+</mapper>

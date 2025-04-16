@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="commons :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css"/>
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/static/css/me.css}">
+</head>
+<body>
+
+
+<!--导航-->
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small" th:replace="commons-admin :: menu(1)">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">管理后台</h2>
+            <a href="#" class="active m-item item m-mobile-hide"><i class="mini home icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">首页</span></a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini folder icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">博客</span></a>
+            <a href="#" class=" m-item item m-mobile-hide"><i class="mini idea icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">分类</span></a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">标签</span></a>
+
+            <div class="right m-item m-mobile-hide menu">
+                <div class="ui dropdown  item">
+                    <div class="text">
+                        <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005">
+                        张鹏
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                        <a href="#" class="item">更换头像</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<br>
+<br>
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big m-opacity">
+    <div class="ui container">
+        <div class="ui success large message">
+            <h3>Hi：管理员</h3>
+            <p><span></span>，欢迎登陆！<a  href="http://localhost:8080/movice/showAll" style="color: red" target="_blank">点击前往前台首页</a></p>
+        </div>
+        <img style="width: 850px ; height: 450px"  src="https://pyy-filmsystem.oss-cn-chengdu.aliyuncs.com/logo/logo%283%29.png" alt="" class="ui rounded bordered fluid image" >
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<!--底部footer-->
+<footer class="ui inverted vertical segment m-padded-tb-massive" th:replace="commons-admin :: footer">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../../static/images/wechat.jpg" th:src="@{/static/images/wechat.jpg}" class="ui rounded image"
+                             alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin">Email：123456@qq.com</a>
+                    <a href="#" class="item m-text-thin">QQ：123456</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2020 - 2030</p>
+    </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+</script>
+</body>
+</html>

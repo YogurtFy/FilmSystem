@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>线上放映室</title>
+  <!-- 使用项目中的主样式 -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="movie-header">
+  <h1>🍿 观影小屋</h1>
+  <p>正在播放：<span class="label">《你的名字。》</span> ｜ 当前观众：<span class="label" id="viewer-count">23</span> 人</p>
+</header>
+
+<div class="movie-container">
+  <div class="movie-side-img">
+    <img src="https://i.imgur.com/3bFGRyY.jpg" alt="左侧装饰">
+  </div>
+
+  <div class="movie-main-content">
+    <div class="movie-video-section">
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV1Jx411c7kS&autoplay=1"
+              scrolling="no" frameborder="no" allowfullscreen></iframe>
+    </div>
+
+    <div class="movie-info">
+      <div class="movie-panel">
+        <h2>🎬 影片简介</h2>
+        <p th:inline="text">
+          [[${movice.description != null && movice.description.length() > 60
+          ? #strings.substring(movice.description, 0, 60) + '...'
+          : (movice.description == null ? '' : movice.description)}]]
+        </p>
+      </div>
+
+      <div class="movie-panel">
+        <h2>👥 当前观众</h2>
+        <div class="movie-audience-list" id="audience-list">
+          <div>🌟 梦瑶</div>
+          <div>🎧 小张</div>
+          <div>🎮 花花</div>
+          <div>📱 观众A</div>
+          <div>💻 观众B</div>
+          <div>📺 观众C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="movie-side-img">
+    <img src="https://i.imgur.com/LdZwjA5.jpg" alt="右侧装饰">
+  </div>
+</div>
+
+</body>
+</html>

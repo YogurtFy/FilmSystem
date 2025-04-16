@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.RegionMapper">
+
+    <resultMap id="RegionResultMap" type="Region">
+        <id property="regionId" column="region_id" />
+        <result property="regionName" column="region_name"/>
+    </resultMap>
+
+
+    <select id="selectAllRegion" resultMap="RegionResultMap">
+        select * from regions
+    </select>
+
+
+<!--                                       管理员                                              -->
+
+    <select id="selectById" resultMap="RegionResultMap">
+        select * from regions where region_id=#{id}
+    </select>
+
+
+    <select id="selectAll" resultMap="RegionResultMap">
+        select * from regions
+        <where>
+            <if test="title != null">
+                and region_name like #{title}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add">
+        INSERT INTO regions (region_name) VALUES (#{regionName});
+    </insert>
+
+    <update id="update">
+        UPDATE regions
+        SET region_name=#{regionName}
+        where region_id=#{regionId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM regions
+        WHERE region_id=#{id}
+    </delete>
+
+</mapper>

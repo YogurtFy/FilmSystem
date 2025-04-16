@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.MoviceMapper">
+
+    <resultMap id="MoviceResultMap" type="Movice">
+        <id property="id" column="id" />
+        <result property="title" column="title"/>
+        <result property="director" column="director"/>
+        <result property="genre" column="genre"/>
+        <result property="releaseDate" column="release_date"/>
+        <result property="runtime" column="runtime"/>
+        <result property="language" column="language"/>
+        <result property="description" column="description"/>
+        <result property="averageRating" column="average_rating"/>
+        <result property="picture" column="picture"/>
+        <result property="video" column="video"/>
+        <result property="regionId" column="region_id"/>
+        <result property="pageView" column="page_view"/>
+        <result property="commentTime" column="comment_time"/>
+        <result property="favritesTime" column="favrites_time"/>
+        <result property="ViewTime" column="View_Time"/>
+    </resultMap>
+
+    <select id="select" resultMap="MoviceResultMap">
+        select *  from movies
+        ORDER BY release_date DESC
+    </select>
+
+    <select id="selectByCondition" resultMap="MoviceResultMap">
+        SELECT * FROM movies
+        WHERE release_date BETWEEN #{startDate} AND #{endDate}
+        <if test="regionId != 0">
+            AND region_id = #{regionId}
+        </if>
+        <if test="genreId != 0">
+            AND id IN (
+            SELECT movice_id FROM movie_genres WHERE genres_id = #{genreId}
+            )
+        </if>
+        AND title LIKE #{searchContent}
+        ORDER BY release_date DESC
+    </select>
+
+
+    <update id="addView" parameterType="int">
+        update movies set page_view = page_view+1
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByid"  resultMap="MoviceResultMap"  parameterType="Integer">
+        SELECT *
+        FROM movies
+        WHERE  id=#{id}
+    </select>
+
+
+    <select id="selectByTagId"  resultMap="MoviceResultMap"  parameterType="Integer">
+        SELECT m.*
+        FROM movies m JOIN movie_tags mt ON m.id = mt.movice_id
+        WHERE mt.tag_id = #{tagId}
+    </select>
+
+
+    <select id="selectFavorite"  parameterType="Integer" resultType="Movice">
+        SELECT m.*
+        FROM movies m
+                 JOIN user_favorites uf ON m.id = uf.movie_id
+        WHERE uf.user_id =#{userId}  and  m.id=#{movieId};
+    </select>
+
+
+    <insert id="insertFavorite">
+        INSERT INTO user_favorites (user_id,movie_id) VALUES (#{userId}, #{movieId});
+    </insert>
+
+    <delete id="deleteFavorite">
+        DELETE FROM user_favorites WHERE user_id = #{userId} AND movie_id = #{movieId};
+    </delete>
+
+    <select id="selectFavorites"  parameterType="Integer" resultType="Movice">
+        SELECT m.*
+        FROM movies m
+                 JOIN user_favorites uf ON m.id = uf.movie_id
+        WHERE uf.user_id =#{userId} ; -- 获取用户ID为1的用户收藏的电影列表
+    </select>
+
+                    <!--                                 管理员                                 -->
+  <select id="selectDirector"  resultType="Movice">
+      SELECT  DISTINCT  director FROM movies;
+  </select>
+
+
+    <select id="selectAll" resultMap="MoviceResultMap">
+        select *
+        from movies
+        <where>
+            <if test="title != null">
+                and title like #{title}
+            </if>
+            <if test="director != null">
+                and director like #{director}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="add">
+        INSERT INTO movies (title,director,release_date,runtime,language,description,average_rating,picture,video,region_id,page_view)
+        VALUES (#{title}, #{director},#{releaseDate},#{runtime},#{language},#{description},#{averageRating},#{picture},#{video},#{regionId},#{pageView});
+    </insert>
+
+    <update id="update">
+        UPDATE movies
+        SET title=#{title},director=#{director},runtime=#{runtime},language=#{language},description=#{description},picture=#{picture},video=#{video},region_id=#{regionId}
+        where id=#{id}
+    </update>
+
+
+    <!--  基于内容的协同过滤  -->
+    <select id="getAllMovies" resultType="Movice">
+        SELECT * FROM movies
+    </select>
+
+    <select id="getMovieRatings" resultType="Rating">
+        SELECT * FROM movie_ratings
+    </select>
+
+
+
+
+
+</mapper>

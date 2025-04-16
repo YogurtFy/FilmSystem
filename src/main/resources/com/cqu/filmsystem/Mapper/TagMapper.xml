@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.TagMapper">
+
+
+    <resultMap id="BaseResultMap" type="Tag">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name
+    </sql>
+
+
+    <select id="selectTag" resultType="com.cqu.filmsystem.pojo.Tag"  >
+        select  * from  t_tag
+        <where>
+            <if test="name != null">
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTagByid" resultType="com.cqu.filmsystem.pojo.Tag"  parameterType="Integer" >
+        select  * from  t_tag where id = #{id}
+    </select>
+
+
+    <!--  用户给电影打标签    -->
+    <insert id="UserAddMovieTag">
+        insert into movie_tags (movice_id,tag_id, user_id)
+        values (#{moviceId}, #{tagId},#{userId})
+    </insert>
+
+    <select id="selectUserMovieTagLive" resultType="com.cqu.filmsystem.pojo.MovieTag"  >
+        select  * from  movie_tags where movice_id = #{moviceId} and tag_id=#{tagId} and user_id=#{userId}
+    </select>
+
+    <select id="selectTagByUserId" resultType="com.cqu.filmsystem.pojo.Tag"  parameterType="Integer" >
+        SELECT t.id, t.name
+        FROM t_tag t
+                 JOIN movie_tags mt ON t.id = mt.tag_id
+        WHERE mt.user_id = #{userId} AND mt.movice_id = #{moviceId};
+
+    </select>
+
+    <delete id="deleteByThreeID">
+        delete from movie_tags
+        where movice_id = #{moviceId} and tag_id=#{tagId} and user_id=#{userId}
+    </delete>
+
+
+
+    <select id="selectAllWithCount" resultType="com.cqu.filmsystem.pojo.Tag">
+        SELECT t.*,COUNT(*) AS counts FROM t_tag t LEFT JOIN movie_tags bt ON t.id = bt.tag_id WHERE bt.id IS NOT NULL GROUP BY t.id ORDER BY counts DESC
+    </select>
+
+
+    <select id="selectByOtherTags" resultType="com.cqu.filmsystem.pojo.Tag">
+        SELECT * FROM t_tag WHERE id NOT IN (SELECT tag_id FROM movie_tags GROUP BY tag_id)
+    </select>
+
+
+    <select id="selectAll" resultType="Tag" >
+        select <include refid="Base_Column_List"/>
+        from t_tag;
+    </select>
+
+
+
+    <!--   根据名字查重  -->
+    <select id="selectByName" resultType="com.cqu.filmsystem.pojo.Tag">
+        SELECT * FROM t_tag WHERE name = #{name}
+    </select>
+
+    <!--  管理页面  添加操作    -->
+    <insert id="insert" parameterType="com.cqu.filmsystem.pojo.Tag">
+        insert into t_tag (id, name)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 管理页面  转到编辑页面   -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_tag
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="Tag">
+        update t_tag
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--  管理页面  删除  -->
+    <select id="selectCountByTagIdForBlogAndTag" resultType="int">
+        select count(*) from movie_tags where tag_id = #{id}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_tag
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+
+
+
+</mapper>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../static/css/style.css" th:href="@{/static/css/style.css}"/>
+	<link rel="stylesheet" href="../static/css/iconfont.css" th:href="@{/static/css/iconfont.css}"/>
+	<link rel="stylesheet" href="http://at.alicdn.com/t/c/font_3848518_firdcil2086.css">
+	
+	<title>登录界面</title>
+	
+</head>
+<body>
+
+	<div id="bigBox">
+		<h1>登录</h1>
+		<div class="inputBox">
+
+			<form action="/user/login" >
+			<div class="inputText">
+				<span class="iconfont icon-yonghu"></span>
+				<input type="text" name="email" placeholder="账号" />
+			</div>
+
+			<div class="inputText">
+				<span class="iconfont icon-mima"></span>
+				<input type="password" name="password" placeholder="密码" />
+			</div>
+
+			<div class="inputText">
+				<span style="font-size: 12px; font-family: 宋; color: red;"  th:text="${tip}" ></span>
+			</div>
+
+			<input class="loginButton1" type="submit" value="登录"  style="margin-top: 18px;" />
+			<a href="/user/register.html"> <input class="loginButton1" type="button" value="注册"  style="margin-top: 18px;" /></a>
+			</form>
+
+
+		</div>
+	</div>
+<script>
+
+	function init(){
+		const tip ="${tip}"
+		if (tip!=null)
+		{
+			alert(tip)
+		}
+	}
+</script>
+</body>
+</html>
+

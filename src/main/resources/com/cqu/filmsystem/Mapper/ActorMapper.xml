@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.ActorMapper">
+
+    <resultMap id="ActorResultMap" type="Actor">
+        <id property="actorId" column="actor_id" />
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+    </resultMap>
+
+
+    <select id="selectByMoviceId" resultMap="ActorResultMap" parameterType="int">
+        SELECT a.actor_id, a.name,  a.picture
+        FROM actors a
+                 INNER JOIN movie_actors ma ON a.actor_id = ma.actor_id
+        WHERE ma.movie_id = #{id};
+    </select>
+
+
+
+    <select id="selectById" resultMap="ActorResultMap">
+        select * from actors where actor_id=#{id}
+    </select>
+
+    <select id="selectAllActor" resultMap="ActorResultMap">
+        select * from actors
+    </select>
+
+    <select id="selectAll" resultMap="ActorResultMap">
+        select * from actors
+        <where>
+            <if test="title != null">
+                and name like #{title}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add">
+        INSERT INTO actors (name,picture) VALUES (#{name},#{picture});
+    </insert>
+
+    <update id="update">
+        UPDATE actors
+        SET name=#{name},picture=#{picture}
+        where actor_id=#{actorId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM actors
+        WHERE actor_id=#{id}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cqu.filmsystem.Mapper.ParameterMapper">
+
+
+    <resultMap id="BaseResultMap" type="Parameter">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="B1"  property="B1" />
+        <result column="B2"  property="B2" />
+        <result column="B3"  property="B3" />
+        <result column="B4"  property="B4" />
+        <result column="u"  property="u" />
+        <result column="c"  property="c" />
+    </resultMap>
+
+
+
+    <select id="select" resultMap="BaseResultMap">
+        select * from  parameter
+    </select>
+
+    <update id="update">
+        UPDATE parameter
+        SET B1=#{B1},B2=#{B2},B3=#{B3},B4=#{B4},u=#{u},c=#{c}
+        where id=1
+    </update>
+
+
+
+</mapper>

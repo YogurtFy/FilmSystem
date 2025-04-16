@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqu.filmsystem.Mapper.SysLogMapper">
+
+
+    <resultMap id="SysLogResultMap" type="Syslog">
+
+        <id property="id" column="id" />
+        <result property="username" column="username"/>
+        <result property="createDate" column="createDate"/>
+        <result property="ViewTime" column="ViewTime"/>
+        <association column="movie_id" javaType="com.cqu.filmsystem.pojo.Movice" property="movice">
+            <id column="mid" jdbcType="BIGINT" property="id"/>
+            <result column="title" jdbcType="VARCHAR" property="title"/>
+            <result column="director" jdbcType="VARCHAR" property="director"/>
+            <result property="releaseDate" column="release_date"/>
+            <result property="runtime" column="runtime"/>
+            <result property="language" column="language"/>
+            <result property="description" column="description"/>
+            <result property="averageRating" column="average_rating"/>
+            <result property="picture" column="picture"/>
+            <result property="video" column="video"/>
+            <result property="pageView" column="page_view"/>
+            <result property="commentTime" column="comment_time"/>
+            <result property="favritesTime" column="favrites_time"/>
+            <result property="ViewTime" column="ViewTime"/>
+            <result property="rating" column="rating"/>
+        </association>
+    </resultMap>
+
+
+
+
+    <insert id="addLog" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id">
+        insert into syslog(id,username,operation,method,createDate,movie_id)
+        values (#{id},#{username},#{operation},#{method},#{createDate},#{movice.id})
+    </insert>
+
+    <update id="update" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id">
+        UPDATE syslog
+        SET ViewTime = ViewTime + #{ViewTime}
+        WHERE id = #{id};
+    </update>
+
+    <select id="selectIsLive" parameterType="com.cqu.filmsystem.pojo.Syslog" resultType="com.cqu.filmsystem.pojo.Syslog">
+        SELECT *
+        FROM syslog
+        where username=#{username} and movie_id=#{movice.id};
+    </select>
+
+
+
+    <update id="updateTime" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id" >
+        UPDATE syslog
+        SET createDate = #{createDate}
+        WHERE username=#{username} and movie_id=#{movice.id};
+    </update>
+
+
+    <select id="selectUserSyslog" parameterType="com.cqu.filmsystem.pojo.Syslog" resultMap="SysLogResultMap" >
+        SELECT s.id , s.username, s.createDate,s.ViewTime,m.id as mid, m.title,m.director,m.release_date,m.runtime,m.language,m.description,
+               m.average_rating, m.picture,m.video,m.page_view,m.comment_time,m.favrites_time, mr.rating
+        FROM syslog s
+                 LEFT JOIN t_user t ON  t.nickname = s.username
+                 LEFT JOIN movies m ON s.movie_id = m.id
+                 LEFT JOIN movie_ratings mr ON m.id = mr.movie_id and mr.user_id=t.id
+        where s.username=#{username}
+        ORDER BY s.createDate DESC ;
+    </select>
+
+
+</mapper>
