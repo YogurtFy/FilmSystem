@@ -1,13 +1,10 @@
 package com.cqu.filmsystem.Mapper;
 
 import com.cqu.filmsystem.pojo.Rating;
-import com.cqu.filmsystem.pojo.Type;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
-
 
 
 @Mapper
@@ -16,14 +13,14 @@ public interface RatingMapper {
 
 
     int  insert(@Param("userId") int userId,
-                @Param("moviceId") int moviceId,
+                @Param("movieId") int movieId,
                 @Param("rating") double rating);
 
     Rating select(@Param("userId") int userId,
-                  @Param("moviceId") int moviceId);
+                  @Param("movieId") int movieId);
 
     int update(@Param("userId") int userId,
-               @Param("moviceId") int moviceId,
+               @Param("movieId") int movieId,
                @Param("rating") double rating);
 
 

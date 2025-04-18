@@ -1,7 +1,7 @@
 package com.cqu.filmsystem.Service.Impl;
 
 import com.cqu.filmsystem.Service.ContentBasedRecommendService;
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.pojo.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +12,17 @@ import java.util.stream.Collectors;
 public class ContentBasedRecommendServiceImpl implements ContentBasedRecommendService {
 
     @Autowired
-    private MoviceServiceImpl moviceService;
+    private MovieServiceImpl movieService;
 
     @Override
-    public List<Movice> recommendBasedOnContent(Movice targetMovie, int numRecommendations) {
+    public List<Movie> recommendBasedOnContent(Movie targetMovie, int numRecommendations) {
         // 获取所有电影
-        List<Movice> allMovies = moviceService.getAllMovies();
+        List<Movie> allMovies = movieService.getAllMovies();
         
         // 计算目标电影与其他所有电影的相似度
-        Map<Movice, Double> similarityScores = new HashMap<>();
+        Map<Movie, Double> similarityScores = new HashMap<>();
         
-        for (Movice movie : allMovies) {
+        for (Movie movie : allMovies) {
             if (movie.getId() != targetMovie.getId()) {
                 double similarity = calculateContentSimilarity(targetMovie, movie);
                 similarityScores.put(movie, similarity);
@@ -31,21 +31,21 @@ public class ContentBasedRecommendServiceImpl implements ContentBasedRecommendSe
         
         // 按相似度排序并返回前N个推荐
         return similarityScores.entrySet().stream()
-                .sorted(Map.Entry.<Movice, Double>comparingByValue().reversed())
+                .sorted(Map.Entry.<Movie, Double>comparingByValue().reversed())
                 .limit(numRecommendations)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
-    private double calculateContentSimilarity(Movice movie1, Movice movie2) {
+    private double calculateContentSimilarity(Movie movie1, Movie movie2) {
         double similarity = 0.0;
         int featureCount = 0;
         
         // 1. 类型相似度
-        if (movie1.getGenre() != null && movie2.getGenre() != null) {
-            Set<String> genres1 = new HashSet<>(Arrays.asList(movie1.getGenre().split(",")));
-            Set<String> genres2 = new HashSet<>(Arrays.asList(movie2.getGenre().split(",")));
-            similarity += calculateJaccardSimilarity(genres1, genres2);
+        if (movie1.getCategory() != null && movie2.getCategory() != null) {
+            Set<String> category1 = new HashSet<>(Arrays.asList(movie1.getCategory().split(",")));
+            Set<String> category2 = new HashSet<>(Arrays.asList(movie2.getCategory().split(",")));
+            similarity += calculateJaccardSimilarity(category1, category2);
             featureCount++;
         }
         

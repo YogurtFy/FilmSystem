@@ -57,7 +57,7 @@
         <div class="required field">
           <div class="ui left labeled input">
             <label class="ui teal basic label">类型</label>
-            <input type="text" name="genreName" placeholder="类型">
+            <input type="text" name="categoryName" placeholder="类型">
           </div>
         </div>
 
@@ -144,7 +144,7 @@
     $('.ui.form').form({
       fields : {
         title : {
-          identifier: 'genreName',
+          identifier: 'categoryName',
           rules: [{
             type : 'empty',
             prompt: '类型：请输入类型名'

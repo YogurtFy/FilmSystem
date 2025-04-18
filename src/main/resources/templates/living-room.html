@@ -28,9 +28,9 @@
       <div class="movie-panel">
         <h2>🎬 影片简介</h2>
         <p th:inline="text">
-          [[${movice.description != null && movice.description.length() > 60
-          ? #strings.substring(movice.description, 0, 60) + '...'
-          : (movice.description == null ? '' : movice.description)}]]
+          [[${movie.description != null && movie.description.length() > 60
+          ? #strings.substring(movie.description, 0, 60) + '...'
+          : (movie.description == null ? '' : movie.description)}]]
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 package com.cqu.filmsystem.Controller;
 
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.pojo.Movie;
 import com.cqu.filmsystem.pojo.UserRecommend;
 
 import java.util.*;
@@ -13,8 +13,8 @@ public class Recommend {
         return key2.compareTo(key1);
     };
 
-    private static Movice findMovieInList(List<Movice> movieList, String title) {
-        for (Movice movie : movieList) {
+    private static Movie findMovieInList(List<Movie> movieList, String title) {
+        for (Movie movie : movieList) {
             if (movie.getTitle().equals(title)) {
                 return movie;
             }
@@ -42,7 +42,7 @@ public class Recommend {
 
             // 空值判断，避免 NullPointerException
             if (u2Username != null && !u2Username.equals(username)) {
-                double distance = pearson_dis(u2.getMoviceList(), u1.getMoviceList());
+                double distance = pearson_dis(u2.getMovieList(), u1.getMovieList());
                 distances.put(distance, u2Username);
             }
         }
@@ -56,16 +56,16 @@ public class Recommend {
      * @param user2Ratings
      * @return
      */
-    private double pearson_dis(List<Movice> user1Ratings, List<Movice> user2Ratings) {
+    private double pearson_dis(List<Movie> user1Ratings, List<Movie> user2Ratings) {
         if (user1Ratings == null || user2Ratings == null || user1Ratings.isEmpty() || user2Ratings.isEmpty()) {
             return 0; // 处理空列表的情况
         }
 
         Map<String, Double> user2RatingsMap = user2Ratings.stream()
                 .filter(movie -> movie.getTitle() != null)  // 过滤掉标题为 null 的电影
-                .collect(Collectors.toMap(Movice::getTitle, Movice::getRating));
+                .collect(Collectors.toMap(Movie::getTitle, Movie::getRating));
 
-        List<Movice> commonMovies = user1Ratings.stream()
+        List<Movie> commonMovies = user1Ratings.stream()
                 .filter(movie1 -> user2RatingsMap.containsKey(movie1.getTitle()))
                 .collect(Collectors.toList());
 
@@ -78,7 +78,7 @@ public class Recommend {
                 .sum();
 
         double sumX = commonMovies.stream()
-                .mapToDouble(Movice::getRating)
+                .mapToDouble(Movie::getRating)
                 .sum();
 
         double sumY = commonMovies.stream()
@@ -103,7 +103,7 @@ public class Recommend {
         return (sumXY - (sumX * sumY) / n) / denominator;
     }
 
-    public List<Movice> recommend(String username, List<UserRecommend> users) {
+    public List<Movie> recommend(String username, List<UserRecommend> users) {
         // 找到最近邻
         Map<Double, String> distances = computeNearestNeighbor(username, users);
         String nearest = distances.values().iterator().next();
@@ -137,12 +137,12 @@ public class Recommend {
         }
 
         // 推荐电影列表和去重集合
-        List<Movice> recommendationMovies = new ArrayList<>();
-        Map<String, Movice> movieTitles = new HashMap<>();
+        List<Movie> recommendationMovies = new ArrayList<>();
+        Map<String, Movie> movieTitles = new HashMap<>();
         Set<String> recommendedMovieTitles = new HashSet<>();
 
         // 优先推荐最近邻用户看的电影
-        for (Movice movie : neighborRatings1.getMoviceList()) {
+        for (Movie movie : neighborRatings1.getMovieList()) {
             if (userRatings.find(movie.getTitle()) == null && !recommendedMovieTitles.contains(movie.getTitle())) {
                 recommendationMovies.add(movie);
                 recommendedMovieTitles.add(movie.getTitle());
@@ -150,12 +150,12 @@ public class Recommend {
         }
 
         // 推荐第二邻居用户看的电影
-        List<Movice> neighborRatings2Movies = neighborRatings2.getMoviceList();
+        List<Movie> neighborRatings2Movies = neighborRatings2.getMovieList();
         if (neighborRatings2Movies == null) {
             neighborRatings2Movies = new ArrayList<>(); // 如果为 null，则初始化为空列表
         }
 
-        for (Movice movie : neighborRatings2Movies) {
+        for (Movie movie : neighborRatings2Movies) {
             if (userRatings.find(movie.getTitle()) == null && !recommendedMovieTitles.contains(movie.getTitle())) {
                 recommendationMovies.add(movie);
                 recommendedMovieTitles.add(movie.getTitle());
@@ -167,9 +167,9 @@ public class Recommend {
             String uName = user.getUsername();
 
             if (uName != null && !uName.equals(username)) {
-                List<Movice> movieList = user.getMoviceList();
+                List<Movie> movieList = user.getMovieList();
                 if (movieList != null) {
-                    for (Movice movie : movieList) {
+                    for (Movie movie : movieList) {
                         String title = movie.getTitle();
 
                         if (title != null &&

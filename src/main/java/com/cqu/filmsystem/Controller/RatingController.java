@@ -27,7 +27,7 @@ public class RatingController {
 
 
     @RequestMapping("/submit")
-    public ResponseEntity<?> showAllAdd(@RequestParam(name = "movieId", required = false, defaultValue = "0") Integer moviceId ,
+    public ResponseEntity<?> showAllAdd(@RequestParam(name = "movieId", required = false, defaultValue = "0") Integer movieId,
                                         @RequestParam(name = "rating", required = false, defaultValue = "0") double rating,
                                         Model model, HttpServletRequest request) throws IOException{
 
@@ -45,14 +45,14 @@ public class RatingController {
         try
         {
             //2.应该先判断是否有评分 有的话就更新 没有的话就应该新插入
-            Rating select = ratingService.select(Math.toIntExact(user.getId()), moviceId);
+            Rating select = ratingService.select(Math.toIntExact(user.getId()), movieId);
             if(select == null)
             {
-                int insert = ratingService.insert(Math.toIntExact(user.getId()), moviceId, rating);
+                int insert = ratingService.insert(Math.toIntExact(user.getId()), movieId, rating);
             }
             else
             {
-                int update = ratingService.update(Math.toIntExact(user.getId()),moviceId,rating);
+                int update = ratingService.update(Math.toIntExact(user.getId()), movieId,rating);
             }
 
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"Rating submitted successfully\"}");
@@ -66,7 +66,7 @@ public class RatingController {
 
 
         //跳转到详情界面
-//        return "redirect:http://localhost:8080/movice/details?id="+moviceId;
+//        return "redirect:http://localhost:8080/movie/details?id="+movieId;
 
     }
 }

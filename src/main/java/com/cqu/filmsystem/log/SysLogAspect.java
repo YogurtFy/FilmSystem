@@ -1,6 +1,6 @@
 package com.cqu.filmsystem.log;
 import com.cqu.filmsystem.Service.SysLogService;
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.pojo.Movie;
 import com.cqu.filmsystem.pojo.Mylog;
 import com.cqu.filmsystem.pojo.Syslog;
 
@@ -68,8 +68,8 @@ public class SysLogAspect {
             }
         }
         if (id != null) {
-            sysLog.setMovice(new Movice())  ;
-            sysLog.getMovice().setId(id);
+            sysLog.setMovie(new Movie())  ;
+            sysLog.getMovie().setId(id);
             System.out.println("Accessing method with @Mylog annotation. Method: " + joinPoint.getSignature().getName() + ", ID: " + id);
         } else {
             System.out.println("ID parameter not found or null");

@@ -27,17 +27,17 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public int insert(int userId, int moviceId, double rating) {
-        return ratingMapper.insert(userId,moviceId,rating);
+    public int insert(int userId, int movieId, double rating) {
+        return ratingMapper.insert(userId, movieId,rating);
     }
 
     @Override
-    public Rating select(int userId, int moviceId) {
-        return ratingMapper.select(userId,moviceId);
+    public Rating select(int userId, int movieId) {
+        return ratingMapper.select(userId, movieId);
     }
 
     @Override
-    public int update(int userId, int moviceId, double rating) {
-        return ratingMapper.update(userId,moviceId,rating);
+    public int update(int userId, int movieId, double rating) {
+        return ratingMapper.update(userId, movieId,rating);
     }
 }

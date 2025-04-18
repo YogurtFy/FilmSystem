@@ -1,6 +1,6 @@
 package com.cqu.filmsystem.Service;
 
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.pojo.Movie;
 import java.util.List;
 
 public interface ContentBasedRecommendService {
@@ -10,5 +10,5 @@ public interface ContentBasedRecommendService {
      * @param numRecommendations 推荐数量
      * @return 推荐的电影列表
      */
-    List<Movice> recommendBasedOnContent(Movice targetMovie, int numRecommendations);
+    List<Movie> recommendBasedOnContent(Movie targetMovie, int numRecommendations);
 } 

@@ -1,12 +1,9 @@
 package com.cqu.filmsystem.Mapper;
 
-import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.pojo.Movice;
 import com.cqu.filmsystem.pojo.Type;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -15,14 +12,14 @@ public interface TypeMapper {
 
     List<Type> selectAllType();
 
-    List<Type>  selectByMoviceId(@Param("id") Integer id) ;
+    List<Type>  selectByMovieId(@Param("id") Integer id) ;
 
 
-    int insertMoviceType(@Param("movieId") Integer movieId,
-                   @Param("genresId") Integer genresId);
+    int insertMovieType(@Param("movieId") Integer movieId,
+                        @Param("categoryId") Integer categoryId);
 
-    int updateMoviceType(@Param("movieId") Integer movieId,
-                         @Param("genresId") Integer genresId);
+    int updateMovieType(@Param("movieId") Integer movieId,
+                        @Param("categoryId") Integer categoryId);
 
 
 //------------------------------------------------管理员-----------------------------------------------------------------
@@ -36,12 +33,8 @@ public interface TypeMapper {
 
     int delete(int id);
 
-    int deleteByMoviceId(int id);
+    int deleteByMovieId(int id);
 
-    int addByMoviceIdTypeId(@Param("id1") Integer id1,
-                            @Param("id2") Integer id2);
-
-
-
-
+    int addByMovieIdTypeId(@Param("id1") Integer id1,
+                           @Param("id2") Integer id2);
 }

@@ -90,12 +90,12 @@
             </thead>
             <tbody>
             <tr th:each="tag:${pageInfo.list}">
-                <td th:text="${tag.genreId}">1</td>
-                <td th:text="${tag.genreName}">2017-10-02 09:45</td>
+                <td th:text="${tag.categoryId}">1</td>
+                <td th:text="${tag.categoryName}">2017-10-02 09:45</td>
                 <td>
-                    <a href="#" th:href="@{'/admin/type/toUpdate?id='+${tag.genreId}}"
+                    <a href="#" th:href="@{'/admin/type/toUpdate?id='+${tag.categoryId}}"
                        class="ui mini teal basic button">编辑</a>
-                    <a href="#" th:href="@{'/admin/type/deleteById?id='+${tag.genreId}}" onclick="return confirmDel()"
+                    <a href="#" th:href="@{'/admin/type/deleteById?id='+${tag.categoryId}}" onclick="return confirmDel()"
                        class="ui mini red basic button">删除</a>
                 </td>
             </tr>

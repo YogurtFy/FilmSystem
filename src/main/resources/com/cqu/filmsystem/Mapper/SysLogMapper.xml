@@ -11,7 +11,7 @@
         <result property="username" column="username"/>
         <result property="createDate" column="createDate"/>
         <result property="ViewTime" column="ViewTime"/>
-        <association column="movie_id" javaType="com.cqu.filmsystem.pojo.Movice" property="movice">
+        <association column="movie_id" javaType="com.cqu.filmsystem.pojo.Movie" property="movie">
             <id column="mid" jdbcType="BIGINT" property="id"/>
             <result column="title" jdbcType="VARCHAR" property="title"/>
             <result column="director" jdbcType="VARCHAR" property="director"/>
@@ -24,7 +24,7 @@
             <result property="video" column="video"/>
             <result property="pageView" column="page_view"/>
             <result property="commentTime" column="comment_time"/>
-            <result property="favritesTime" column="favrites_time"/>
+            <result property="favroitesTime" column="favroites_time"/>
             <result property="ViewTime" column="ViewTime"/>
             <result property="rating" column="rating"/>
         </association>
@@ -35,7 +35,7 @@
 
     <insert id="addLog" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id">
         insert into syslog(id,username,operation,method,createDate,movie_id)
-        values (#{id},#{username},#{operation},#{method},#{createDate},#{movice.id})
+        values (#{id},#{username},#{operation},#{method},#{createDate},#{movie.id})
     </insert>
 
     <update id="update" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id">
@@ -47,7 +47,7 @@
     <select id="selectIsLive" parameterType="com.cqu.filmsystem.pojo.Syslog" resultType="com.cqu.filmsystem.pojo.Syslog">
         SELECT *
         FROM syslog
-        where username=#{username} and movie_id=#{movice.id};
+        where username=#{username} and movie_id=#{movie.id};
     </select>
 
 
@@ -55,7 +55,7 @@
     <update id="updateTime" parameterType="com.cqu.filmsystem.pojo.Syslog" useGeneratedKeys="true" keyProperty="id" >
         UPDATE syslog
         SET createDate = #{createDate}
-        WHERE username=#{username} and movie_id=#{movice.id};
+        WHERE username=#{username} and movie_id=#{movie.id};
     </update>
 
 

@@ -1,10 +1,10 @@
 package com.cqu.filmsystem.Controller.admin;
 import com.github.pagehelper.PageInfo;
 import com.cqu.filmsystem.Service.Impl.ActorServiceImpl;
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
+import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
 import com.cqu.filmsystem.Service.Impl.RegionServiceImpl;
 import com.cqu.filmsystem.Service.Impl.TypeServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,12 +25,12 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin/movice")
-public class MoviceAdminController {
+@RequestMapping("/admin/movie")
+public class MovieAdminController {
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
     @Autowired
     @Qualifier("typeServiceImpl")
@@ -55,7 +55,7 @@ public class MoviceAdminController {
                          Model model , HttpServletRequest request) throws IOException {
 
         //查询所有电影
-        PageInfo<Movice> select = moviceService.selectAll(pageNum,pageSize,title,director);
+        PageInfo<Movie> select = movieService.selectAll(pageNum,pageSize,title,director);
 
         //查询用户信息
         HttpSession session = request.getSession(false);
@@ -68,14 +68,14 @@ public class MoviceAdminController {
         }
 
         //查询所有导演
-        List<Movice> directorList = moviceService.selectDirector();
+        List<Movie> directorList = movieService.selectDirector();
 
         model.addAttribute("pageInfo",select);
         model.addAttribute("title",title);
         model.addAttribute("director",director);
         model.addAttribute("message",message);
         model.addAttribute("directorList",directorList);
-        return "movice-admin";
+        return "movie-admin";
     }
 
 
@@ -89,12 +89,12 @@ public class MoviceAdminController {
 
 
         //查询所有电影
-        PageInfo<Movice> select = moviceService.selectAll(pageNum,pageSize,title,director);
+        PageInfo<Movie> select = movieService.selectAll(pageNum,pageSize,title,director);
         model.addAttribute("pageInfo",select);
         model.addAttribute("title",title);
         model.addAttribute("director",director);
         model.addAttribute("message",message);
-        return "movice-admin:: blogList";
+        return "movie-admin:: blogList";
     }
 
 
@@ -103,15 +103,15 @@ public class MoviceAdminController {
     public String toUpdate(@RequestParam(name = "id") int id, Model model) throws IOException {
 
         //查询电影信息
-        Movice movice = moviceService.selectByid(id);
-        model.addAttribute("movice",movice);
+        Movie movie = movieService.selectByid(id);
+        model.addAttribute("movie", movie);
 
         //查询所有分类的
         List<Type> types = typeService.selectAllType();
         model.addAttribute("types",types);
 
         //查询该电影的分类
-        List<Type> types1 = typeService.selectByMoviceId(id);
+        List<Type> types1 = typeService.selectByMovieId(id);
         model.addAttribute("types1",types1);
         model.addAttribute("id",id);
 
@@ -124,14 +124,14 @@ public class MoviceAdminController {
         model.addAttribute("regions",regions);
 
         //获取电影的分类：
-        List<Type> types2 = typeService.selectByMoviceId(id);
-        List<Integer> selectedGenreIds = new ArrayList<>();
+        List<Type> types2 = typeService.selectByMovieId(id);
+        List<Integer> selectedCategoryIds = new ArrayList<>();
         for (Type type: types2)
         {
-            selectedGenreIds.add(type.getGenreId());
+            selectedCategoryIds.add(type.getCategoryId());
         }
-        model.addAttribute("selectedGenreIds",selectedGenreIds);
-        return "movice-admin-update";
+        model.addAttribute("selectedCategoryIds", selectedCategoryIds);
+        return "movie-admin-update";
     }
 
 
@@ -149,11 +149,11 @@ public class MoviceAdminController {
         model.addAttribute("types",types);
         model.addAttribute("actors",actors);
         model.addAttribute("regions",regions);
-        return "movice-admin-input";
+        return "movie-admin-input";
     }
 
     @RequestMapping("/add")
-    public String add(Movice blog, @RequestParam(name = "tagIds", required = false) List<Integer> tagIds, RedirectAttributes attributes,Model model) {
+    public String add(Movie blog, @RequestParam(name = "tagIds", required = false) List<Integer> tagIds, RedirectAttributes attributes, Model model) {
 
 
         //设置电影信息
@@ -167,23 +167,23 @@ public class MoviceAdminController {
         try
         {
             //添加电影信息
-            int add = moviceService.add(blog);
+            int add = movieService.add(blog);
 
             //查询电影id
-            PageInfo<Movice> movicePageInfo = moviceService.selectAll(1, 5, blog.getTitle(), blog.getDirector());
+            PageInfo<Movie> moviePageInfo = movieService.selectAll(1, 5, blog.getTitle(), blog.getDirector());
 
 
-            int moviceId = movicePageInfo.getList().get(0).getId();
+            int movieId = moviePageInfo.getList().get(0).getId();
 
             //插入类型
             for (int i=0 ; i<tagIds.size(); i++)
             {
-                Integer genresId = tagIds.get(i);
-                typeService.insertMoviceType(moviceId, genresId);
+                Integer categoryId = tagIds.get(i);
+                typeService.insertMovieType(movieId, categoryId);
             }
 
             message="添加成功！";
-            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movice/showAll")
+            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movie/showAll")
                     .queryParam("message", message)
                     .toUriString();
 
@@ -192,7 +192,7 @@ public class MoviceAdminController {
         {
             e.printStackTrace();
             message="插入失败!";
-            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movice/showAll")
+            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movie/showAll")
                     .queryParam("message", message)
                     .toUriString();
         }
@@ -203,7 +203,7 @@ public class MoviceAdminController {
 
 
     @RequestMapping("/update")
-    public String update(@RequestParam(name = "id") int id,Movice blog, @RequestParam(name = "tagIds", required = false) List<Integer> tagIds, RedirectAttributes attributes) {
+    public String update(@RequestParam(name = "id") int id, Movie blog, @RequestParam(name = "tagIds", required = false) List<Integer> tagIds, RedirectAttributes attributes) {
 
         String message=null;
         String redirectUrl;
@@ -211,22 +211,22 @@ public class MoviceAdminController {
 
             //对电影信息进行修改
             blog.setId(id);
-            int update = moviceService.update(blog);
+            int update = movieService.update(blog);
 
 
             //删除全部分类
-            int i1 = typeService.deleteByMoviceId(id);
+            int i1 = typeService.deleteByMovieId(id);
 
 
             //对分类进行修改
             for (int i=0 ; i<tagIds.size(); i++)
             {
-                Integer genresId = tagIds.get(i);
-                typeService.addByMoviceIdTypeId(id, genresId);
+                Integer categoryId = tagIds.get(i);
+                typeService.addByMovieIdTypeId(id, categoryId);
             }
 
             message="修改成功！";
-            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movice/showAll")
+            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movie/showAll")
                     .queryParam("message", message)
                     .toUriString();
 
@@ -234,7 +234,7 @@ public class MoviceAdminController {
         {
             e.printStackTrace();
             message="修改失败!";
-            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movice/showAll")
+            redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/admin/movie/showAll")
                     .queryParam("message", message)
                     .toUriString();
         }

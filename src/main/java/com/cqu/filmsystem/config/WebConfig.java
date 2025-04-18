@@ -22,8 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/login",     // 登录处理请求
                         "/user/register.html",     // 注册页面
                         "/user/register",     // 注册请求处理
-                        "/movice/**",     // 电影推荐页
-                        "/movice/details",     // 电影推荐页
+                        "/movie/**",     // 电影推荐页
+                        "/movie/details",     // 电影推荐页
                         "/type/showAll",     // 电影分类显示
                         "/static/css/**",      // 静态资源
                         "/static/js/**",

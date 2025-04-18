@@ -6,37 +6,37 @@
 <mapper namespace="com.cqu.filmsystem.Mapper.TypeMapper">
 
     <resultMap id="TypeResultMap" type="Type">
-        <id property="genreId" column="genre_id" />
-        <result property="genreName" column="genre_name"/>
+        <id property="categoryId" column="category_id" />
+        <result property="categoryName" column="category_name"/>
         <result property="movieCount" column="movie_count"/>
     </resultMap>
 
 
 
     <select id="selectAllType" resultMap="TypeResultMap">
-        SELECT g.genre_id, g.genre_name, COUNT(mg.movice_id) AS movie_count
-        FROM genres g
-                 LEFT JOIN movie_genres mg ON g.genre_id = mg.genres_id
-        GROUP BY g.genre_id, g.genre_name
+        SELECT c.category_id, c.category_name, COUNT(mc.movie_id) AS movie_count
+        FROM category c
+                 LEFT JOIN movie_category mc ON c.category_id = mc.category_id
+        GROUP BY c.category_id, c.category_name
         ORDER BY movie_count DESC;
     </select>
 
-    <select id="selectByMoviceId" resultMap="TypeResultMap" parameterType="int">
-        SELECT g.genre_id,g.genre_name
-        FROM genres g
-        INNER JOIN movie_genres mg ON g.genre_id = mg.genres_id
-        WHERE mg.movice_id = #{id};
+    <select id="selectByMovieId" resultMap="TypeResultMap" parameterType="int">
+        SELECT c.category_id,c.category_name
+        FROM category c
+        INNER JOIN movie_category mc ON c.category_id = mc.category_id
+        WHERE mc.movie_id = #{id};
     </select>
 
-    <insert id="insertMoviceType">
-        INSERT INTO movie_genres (movice_id,genres_id) VALUES (#{movieId}, #{genresId});
+    <insert id="insertMovieType">
+        INSERT INTO movie_category (movie_id,category_id) VALUES (#{movieId}, #{categoryId});
     </insert>
 
 
-    <update id="updateMoviceType">
-        UPDATE movie_genres
-        SET movice_id=#{movieId},genres_id=#{genresId}
-        where movice_id=#{movieId}
+    <update id="updateMovieType">
+        UPDATE movie_category
+        SET movie_id=#{movieId},category_id=#{categoryId}
+        where movie_id=#{movieId}
     </update>
 
 
@@ -53,41 +53,41 @@
 
 
     <select id="selectById" resultMap="TypeResultMap">
-        select * from genres where genre_id=#{id}
+        select * from category where category_id=#{id}
     </select>
 
 
     <select id="selectAll" resultMap="TypeResultMap">
-        select * from genres
+        select * from category
         <where>
             <if test="title != null">
-                and genre_name like #{title}
+                and category_name like #{title}
             </if>
         </where>
     </select>
 
     <insert id="add">
-        INSERT INTO genres (genre_name) VALUES (#{genreName});
+        INSERT INTO category (category_name) VALUES (#{categoryName});
     </insert>
 
-    <insert id="addByMoviceIdTypeId">
-        INSERT INTO movie_genres (movice_id,genres_id) VALUES (#{id1},#{id2});
+    <insert id="addByMovieIdTypeId">
+        INSERT INTO movie_category (movie_id,category_id) VALUES (#{id1},#{id2});
     </insert>
 
     <update id="update">
-        UPDATE genres
-        SET genre_name=#{genreName}
-        where genre_id=#{genreId}
+        UPDATE category
+        SET category_name=#{categoryName}
+        where category_id=#{categoryId}
     </update>
 
     <delete id="delete">
-        DELETE FROM genres
-        WHERE genre_id=#{id}
+        DELETE FROM category
+        WHERE category_id=#{id}
     </delete>
 
-    <delete id="deleteByMoviceId">
-        DELETE FROM movie_genres
-        WHERE movice_id=#{id}
+    <delete id="deleteByMovieId">
+        DELETE FROM movie_category
+        WHERE movie_id=#{id}
     </delete>
 
 

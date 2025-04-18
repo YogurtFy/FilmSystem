@@ -61,19 +61,19 @@
             </div> -->
 
 
-            <a href="/movice/favorite"   id="favorite-container" th:href="@{'/movice/favorite?movieId='+${movie.id}}"  th:if="${favorite == null && session.user!=null}" >
+            <a href="/movie/favorite"   id="favorite-container" th:href="@{'/movie/favorite?movieId='+${movie.id}}"  th:if="${favorite == null && session.user!=null}" >
                 <button style="float: right" class="ui mini red basic button" > <i class="heart outline icon"></i>点击收藏
                 </button>
             </a>
 
-            <a href="/movice/deleteFavorite"   th:href="@{'/movice/deleteFavorite?movieId='+${movie.id}}"  th:if="${favorite != null && session.user!=null }" >
+            <a href="/movie/deleteFavorite"   th:href="@{'/movie/deleteFavorite?movieId='+${movie.id}}"  th:if="${favorite != null && session.user!=null }" >
                 <button style="float: right" class="ui mini red basic button" > <i class="heart outline icon"></i>取消收藏
                 </button>
             </a>
 
 
 
-            <h2 class="ui center aligned header" th:text="${movie.title}">海王2：失落的王国</h2>
+            <h2 class="ui center aligned header" th:text="${movie.title}">标题</h2>
             <br>
 
             <!-- <div id="content"  th:utext="${blog.content}"
@@ -82,8 +82,8 @@
                  在上一次试图击败海王未果后，黑蝠鲼依然不甘放弃为父报仇，誓要消灭海王。这一次，他找到了传说中的黑暗三叉戟，释放出古老的邪恶力量，比以往更来势汹汹。为了与之抗衡，海王向被囚禁狱中的弟弟奥姆求助，组成了出乎意料的联盟。他俩必须抛弃前仇旧怨，携手并肩作战，才能从即将到来的灾难中保卫王国，拯救家人，拯救世界。
             </div> -->
 
-            <div style="text-align: left; padding: 0 50px; font-family: 'Arial', sans-serif; font-size: 16px; line-height: 1.6; color: #333;">
-                简介：在上一次试图击败海王未果后，黑蝠鲼依然不甘放弃为父报仇，誓要消灭海王。这一次，他找到了传说中的黑暗三叉戟，释放出古老的邪恶力量，比以往更来势汹汹。为了与之抗衡，海王向被囚禁狱中的弟弟奥姆求助，组成了出乎意料的联盟。他俩必须抛弃前仇旧怨，携手并肩作战，才能从即将到来的灾难中保卫王国，拯救家人，拯救世界。
+            <div th:text="${movie.description}"style="text-align: left; padding: 0 50px; font-family: 'Arial', sans-serif; font-size: 16px; line-height: 1.6; color: #333;">
+                简介
             </div>
 
 
@@ -91,7 +91,7 @@
             <!--标签-->
             <div class="m-padded-lr-responsive" th:if="${types != null}">
                 <div class="ui basic teal top pointing label">类型：</div>
-                <div class="ui basic teal top pointing label" th:if="${types != null}" th:each="type:${types}" th:text="${type.genreName}">科幻</div>
+                <div class="ui basic teal top pointing label" th:if="${types != null}" th:each="type:${types}" th:text="${type.categoryName}">科幻</div>
             </div>
 
 <!--            <div class="m-padded-lr-responsive" th:if="${tag != null}">-->
@@ -139,11 +139,11 @@
 
                 <!-- 打标签弹窗 -->
                 <div class="ui tagQR flowing popup transition hidden">
-                    <form id="saveForm" action="#" th:action="@{/movice/addTag(movieId=${movie.id})}" method="post" class="ui form">
+                    <form id="saveForm" action="#" th:action="@{/movie/addTag(movieId=${movie.id})}" method="post" class="ui form">
                     <div class="field">
                         <div class="ui left labeled action input">
                             <label class="ui compact teal basic label">标签</label>
-                            <div class="ui fluid selection multiple search dropdown" id="genreDropdown" style="width: 500px;">
+                            <div class="ui fluid selection multiple search dropdown" id="categoryDropdown" style="width: 500px;">
                                 <input type="hidden" name="tagIds"/>
                                 <i class="dropdown icon"></i>
                                 <div class="default text">标签</div>
@@ -164,14 +164,15 @@
 
             <div style="padding: 0 50px; display: flex; flex-wrap: wrap; justify-content: start; align-items: center; gap: 10px;">
 
-                <div style="width: 80px;" th:each="actor:${actors}" >
+                <div th:each="actor : ${actors}">
                     <div class="image">
-                        <img  src="../static/images/picture22.webp" th:src="@{${actor.picture}}"  class="ui circular image" style="width: 80px; height: 80px;">
+                        <img th:src="'/img-proxy?url=' + ${actor.picture}" class="ui circular image" style="width: 80px; height: 80px;">
                     </div>
                     <div class="content">
-                        <div class="header" th:text="${actor.name}" style="font-size: 12px; padding: 5px; text-align: center;">导演：亚当·温加德</div>
+                        <div class="header" th:text="${actor.name}" style="font-size: 12px; padding: 5px; text-align: center;"></div>
                     </div>
                 </div>
+
 
 
 
@@ -427,14 +428,14 @@
 
     //初始化显示标签
     /*<![CDATA[*/
-    var selectedGenreIds = [[${selectedGenreIds}]];
+    var selectedCategoryIds = [[${selectedCategoryIds}]];
     var tags = /*[[${tags}]]*/ [];
     $(document).ready(function() {
-        // 假设selectedGenreIds是一个包含标签ID的数组，例如 [1, 2, 3]
-        var selectedGenreIds = [[${selectedGenreIds}]];
+        // 假设selectedCategoryIds是一个包含标签ID的数组，例如 [1, 2, 3]
+        var selectedCategoryIds = [[${selectedCategoryIds}]];
 
         // 初始化Dropdown
-        $('#genreDropdown').dropdown({
+        $('#categoryDropdown').dropdown({
             allowAdditions: true, // 如果需要允许用户添加新标签
             onChange: function(value, text, $selectedItem) {
                 // 处理标签选择变化的事件
@@ -442,8 +443,8 @@
         });
 
         // 设置之前选中的标签
-        selectedGenreIds.forEach(function(id) {
-            $('#genreDropdown').dropdown('set selected', id);
+        selectedCategoryIds.forEach(function(id) {
+            $('#categoryDropdown').dropdown('set selected', id);
         });
     });
 
@@ -472,7 +473,7 @@
         var movieId = document.getElementById('movieId').value; // 获取隐藏的input元素中的movie.id
 
         // 发送时间和movie.id到后端
-        navigator.sendBeacon('/movice/log-time', JSON.stringify({ movieId: movieId, timeSpent: timeSpentMins.toFixed(2) }));
+        navigator.sendBeacon('/movie/log-time', JSON.stringify({ movieId: movieId, timeSpent: timeSpentMins.toFixed(2) }));
     };
 
 
@@ -547,7 +548,7 @@
     //分页点击
     function page(obj) {
         var pageNum = $(obj).attr('pageNum');
-        $("#comment-container").load(/*[[@{/movice/details/search}]]*/"", {
+        $("#comment-container").load(/*[[@{/movie/details/search}]]*/"", {
             id: /*[[${movie.id}]]*/1,
             pageNum: pageNum
         });
@@ -555,7 +556,7 @@
 
     function postData() {
         //品论用户id在控制层获取
-        $("#comment-container").load(/*[[@{/movice/addComment}]]*/"", {
+        $("#comment-container").load(/*[[@{/movie/addComment}]]*/"", {
             "blogId": $("[name='blog.id']").val(),
             "parentCommentId": $("[name='parentComment.id']").val(),
             "content": $("[name='content']").val()

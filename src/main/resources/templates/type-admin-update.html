@@ -57,13 +57,13 @@
 <!--中间内容-->
 <div  class="m-container-small m-padded-tb-big m-opacity">
     <div class="ui container">
-        <form id="saveForm" action="#" th:action="@{/admin/type/update(id=${type.getGenreId()})}" method="post" class="ui form">
+        <form id="saveForm" action="#" th:action="@{/admin/type/update(id=${type.getCategoryId()})}" method="post" class="ui form">
 
 
             <div class="required field">
                 <div class="ui left labeled input">
                     <label class="ui teal basic label">电影名</label>
-                    <input type="text" name="genreName" placeholder="电影名" th:value="${type.genreName}">
+                    <input type="text" name="categoryName" placeholder="电影名" th:value="${type.categoryName}">
                 </div>
             </div>
 
@@ -144,7 +144,7 @@
     $('.ui.form').form({
         fields : {
             title : {
-                identifier: 'genreName',
+                identifier: 'categoryName',
                 rules: [{
                     type : 'empty',
                     prompt: '标题：请输入电影名'

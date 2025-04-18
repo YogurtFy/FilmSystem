@@ -1,14 +1,13 @@
 package com.cqu.filmsystem.Controller;
 
+import com.cqu.filmsystem.pojo.Movie;
 import com.github.pagehelper.PageInfo;
 
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
+import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
 import com.cqu.filmsystem.Service.Impl.TagServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.Service.TagService;
-import com.cqu.filmsystem.pojo.Movice;
 import com.cqu.filmsystem.pojo.Tag;
-import com.cqu.filmsystem.pojo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -27,8 +26,8 @@ public class TagsController {
 
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
 
 
@@ -44,17 +43,17 @@ public class TagsController {
                            @RequestParam(name = "tagId", required = false, defaultValue = "0") Integer tagId,
                            @RequestParam(name = "searchContent", required = false, defaultValue = "") String searchContent,
                            Model model)  throws IOException {
-        PageInfo<Movice> PageInfo;
+        PageInfo<Movie> PageInfo;
         //查询博客信息:
         if(tagId==0)
         {
             // 查询博客 首页
-            PageInfo = moviceService.select(pageNum, pageSize);
+            PageInfo = movieService.select(pageNum, pageSize);
         }
         else
         {
             // 根据tagId查询  首页
-            PageInfo = moviceService.selectByTagId(pageNum,pageSize,tagId);
+            PageInfo = movieService.selectByTagId(pageNum,pageSize,tagId);
         }
 
         model.addAttribute("pageInfo",PageInfo);
@@ -76,18 +75,18 @@ public class TagsController {
 
 
 
-        PageInfo<Movice> PageInfo;
+        PageInfo<Movie> PageInfo;
         //查询博客信息:
         //查询博客信息:
         if(tagId==0)
         {
             // 查询博客 首页
-            PageInfo = moviceService.select(pageNum, pageSize);
+            PageInfo = movieService.select(pageNum, pageSize);
         }
         else
         {
             // 根据tagId查询  首页
-            PageInfo = moviceService.selectByTagId(pageNum,pageSize,tagId);
+            PageInfo = movieService.selectByTagId(pageNum,pageSize,tagId);
         }
         model.addAttribute("pageInfo",PageInfo);
         model.addAttribute("tagId",tagId);

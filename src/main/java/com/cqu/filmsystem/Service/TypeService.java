@@ -1,7 +1,6 @@
 package com.cqu.filmsystem.Service;
 
 import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.pojo.Movice;
 import com.cqu.filmsystem.pojo.Type;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,16 +15,16 @@ public interface TypeService {
 
 
     //2.根据电影ID查询类型
-    List<Type>  selectByMoviceId(int id) throws  IOException;
+    List<Type>  selectByMovieId(int id) throws  IOException;
 
 
 
-    int insertMoviceType(@Param("movieId") Integer movieId,
-                         @Param("genresId") Integer genresId);
+    int insertMovieType(@Param("movieId") Integer movieId,
+                        @Param("categoryId") Integer categoryId);
 
 
-    int updateMoviceType(@Param("movieId") Integer movieId,
-                         @Param("genresId") Integer genresId);
+    int updateMovieType(@Param("movieId") Integer movieId,
+                        @Param("categoryId") Integer categoryId);
 
 
 
@@ -40,13 +39,8 @@ public interface TypeService {
 
     int delete(int id);
 
-    int deleteByMoviceId(int id);
+    int deleteByMovieId(int id);
 
-    int addByMoviceIdTypeId(int id1,int id2);
-
-
-
-
-
+    int addByMovieIdTypeId(int id1, int id2);
 
 }

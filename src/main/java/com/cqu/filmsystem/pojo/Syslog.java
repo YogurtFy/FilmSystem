@@ -15,7 +15,7 @@ public class Syslog implements Serializable {
 
     private Date createDate; //操作时间，这里可以使用Date来实现。我写的有个工具类。用的String接收
 
-    private Movice movice;  //观看的电影
+    private Movie movie;  //观看的电影
 
     private double ViewTime; //持续时间
 
@@ -61,12 +61,12 @@ public class Syslog implements Serializable {
     }
 
 
-    public Movice getMovice() {
-        return movice;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovice(Movice movice) {
-        this.movice = movice;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     public double getViewTime() {
@@ -85,7 +85,7 @@ public class Syslog implements Serializable {
                 ", operation='" + operation + '\'' +
                 ", method='" + method + '\'' +
                 ", createDate=" + createDate +
-                ", movice=" + movice +
+                ", movie=" + movie +
                 ", ViewTime=" + ViewTime +
                 '}';
     }

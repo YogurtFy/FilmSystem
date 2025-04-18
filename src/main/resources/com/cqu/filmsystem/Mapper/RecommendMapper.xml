@@ -9,7 +9,7 @@
 
         <id property="id" column="id" />
         <result property="username" column="username"/>
-        <association column="movie_id" javaType="com.cqu.filmsystem.pojo.Movice" property="movice">
+        <association column="movie_id" javaType="com.cqu.filmsystem.pojo.Movie" property="movie">
             <id column="mid" jdbcType="BIGINT" property="id"/>
             <result column="title" jdbcType="VARCHAR" property="title"/>
             <result column="director" jdbcType="VARCHAR" property="director"/>
@@ -22,7 +22,7 @@
             <result property="video" column="video"/>
             <result property="pageView" column="page_view"/>
             <result property="commentTime" column="comment_time"/>
-            <result property="favritesTime" column="favrites_time"/>
+            <result property="favoritesTime" column="favorites_time"/>
             <result property="ViewTime" column="ViewTime"/>
             <result property="rating" column="rating"/>
         </association>

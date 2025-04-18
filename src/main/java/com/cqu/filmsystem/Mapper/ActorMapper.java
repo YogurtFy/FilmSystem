@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ActorMapper {
 
-    List<Actor>  selectByMoviceId(@Param("id") Integer id) ;
+    List<Actor>  selectByMovieId(@Param("id") Integer id) ;
 
 
     List<Actor> selectAllActor();

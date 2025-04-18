@@ -1,17 +1,15 @@
 package com.cqu.filmsystem.Controller;
 
 
+import com.cqu.filmsystem.pojo.Movie;
 import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
 import com.cqu.filmsystem.Service.Impl.RecommendServiceImpl;
 import com.cqu.filmsystem.Service.Impl.UserServiceImpl;
-import com.cqu.filmsystem.pojo.Movice;
 import com.cqu.filmsystem.pojo.UserInfo;
 import com.cqu.filmsystem.pojo.UserRecommend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +46,18 @@ public class RecommendController {
             //根据姓名查询其用户的使用历史
             List<UserRecommend> userRecommends = recommendService.userBrowsingHistory(name);
 
-            List<Movice> moviceList = new ArrayList<>();
+            List<Movie> movieList = new ArrayList<>();
             for (int j = 0; j < userRecommends.size(); j++) {
-                moviceList.add(userRecommends.get(j).getMovice());
+                movieList.add(userRecommends.get(j).getMovie());
             }
-            userRecommend.setMoviceList(moviceList);
+            userRecommend.setMovieList(movieList);
             userArrayList.add(userRecommend);
         }
         Recommend recommend = new Recommend();
-        List<Movice> recommendationMovies = recommend.recommend("一有",userArrayList);
+        List<Movie> recommendationMovies = recommend.recommend("一有",userArrayList);
         System.out.println("-----------------------");
         System.out.println("推荐结果如下：");
-        for (Movice movie : recommendationMovies) {
+        for (Movie movie : recommendationMovies) {
 //            System.out.println("电影："+movie.getTitle()+" ,评分："+movie.getRating());
             System.out.println(movie);
         }
@@ -69,11 +67,11 @@ public class RecommendController {
         }
         int pageNum = 1; // 第一页
         int pageSize = 5; // 每页5条
-        List<Movice> pageContent = recommendationMovies.stream()
+        List<Movie> pageContent = recommendationMovies.stream()
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
-        PageInfo<Movice> pageInfo = new PageInfo<>(pageContent);
+        PageInfo<Movie> pageInfo = new PageInfo<>(pageContent);
         pageInfo.setPageNum(pageNum);
         pageInfo.setPageSize(pageSize);
         pageInfo.setTotal(recommendationMovies.size());
@@ -83,8 +81,8 @@ public class RecommendController {
 
     @RequestMapping("/recommend1")
     public void recommendMovies() {
-        List<Movice> moviceList = recommendService.recommendMoviesForUser(1L);
-        for (Movice m:moviceList) {
+        List<Movie> movieList = recommendService.recommendMoviesForUser(1L);
+        for (Movie m: movieList) {
             System.out.println(m);
         }
     }

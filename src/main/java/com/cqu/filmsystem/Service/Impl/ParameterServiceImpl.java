@@ -1,6 +1,5 @@
 package com.cqu.filmsystem.Service.Impl;
 
-import com.cqu.filmsystem.Mapper.MoviceMapper;
 import com.cqu.filmsystem.Mapper.ParameterMapper;
 import com.cqu.filmsystem.Service.ParameterService;
 import com.cqu.filmsystem.pojo.Parameter;

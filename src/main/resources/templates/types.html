@@ -58,12 +58,12 @@
 
                     <div class="ui labeled action input">
                         <div class="ui type selection dropdown">
-                            <input id="genreId" type="hidden" name="genreId">
+                            <input id="categoryId" type="hidden" name="categoryId">
                             <i class="dropdown icon"></i>
                             <div class="default text">类型</div>
                             <div class="menu">
-                                <div th:each="t:${types}" class="item" data-value="1" th:data-value="${t.genreId}"
-                                     th:text="${t.genreName}">错误日志
+                                <div th:each="t:${types}" class="item" data-value="1" th:data-value="${t.categoryId}"
+                                     th:text="${t.categoryName}">错误日志
                                 </div>
                             </div>
                         </div>
@@ -144,15 +144,15 @@
             </div>
         </div>
 
-        <div  class="ui   padded vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="movice:${pageInfo.list}">
+        <div  class="ui   padded vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="movie:${pageInfo.list}">
             <div class="ui mobile reversed stackable grid">
                 <div class="eleven wide column">
-                    <h3 class="ui header"><a href="#" th:href="@{'/movice/details?id='+${movice.id}}"
+                    <h3 class="ui header"><a href="#" th:href="@{'/movie/details?id='+${movie.id}}"
                                              target="_blank" class="m-black"
-                                             th:text="${movice.title}">你真的理解什么是财富自由吗</a>
+                                             th:text="${movie.title}">你真的理解什么是财富自由吗</a>
                     </h3>
                     <p class="m-text"   th:inline="text">
-                        [[${#strings.substring(movice.description, 0, #strings.length(movice.description) < 300 ? #strings.length(movice.description) : 300)}]]</p>
+                        [[${#strings.substring(movie.description, 0, #strings.length(movie.description) < 300 ? #strings.length(movie.description) : 300)}]]</p>
                     <div class="ui grid">
                         <div class="eleven wide column">
                             <div class="ui mini horizontal link list">
@@ -161,14 +161,14 @@
                                     <!--                                         th:src="@{${blog.userInfo.headPortrait}}" alt=""-->
                                     <!--                                         class="ui avatar image">-->
                                     <div class="content"><a href="#" class="header"
-                                                            th:text="${movice.director}">张鹏</a></div>
+                                                            th:text="${movie.director}">张鹏</a></div>
                                 </div>
                                 <div class="item">
                                     <i class="calendar icon"></i>
-                                    <span th:text="${#dates.format(movice.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
+                                    <span th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
                                 </div>
                                 <div class="item">
-                                    <i class="eye icon"></i> <span th:text="${movice.pageView}">2315</span>
+                                    <i class="eye icon"></i> <span th:text="${movie.pageView}">2315</span>
                                 </div>
                             </div>
                         </div>
@@ -180,8 +180,8 @@
                 </div>
 
                 <div class="five wide column">
-                    <a href="#"   th:href="@{'/movice/details?id='+${movice.id}}"  target="_blank">
-                        <img src="../static/images/phone1.jpg"  alt="" th:src="'/img-proxy?url=' + ${movice.picture}"
+                    <a href="#"   th:href="@{'/movie/details?id='+${movie.id}}"  target="_blank">
+                        <img src="../static/images/phone1.jpg"  alt="" th:src="'/img-proxy?url=' + ${movie.picture}"
                              class="ui rounded image">
                     </a>
                 </div>
@@ -315,25 +315,25 @@
     //分页提交表单
     function loaddata1() {
         var pageNum = $("#pageNum").val();
-        var genreId = $("#genreId").val();
+        var categoryId = $("#categoryId").val();
         var year = $("#year").val();
         var regionId = $("#regionId").val();
         var searchContent = $("#searchContent").val();
         //局部刷新的必须的元素id必须调用load
         $("#blogList").load(/*[[@{/type/showAll/search}]]*/"/type/showAll/search",
-            {pageNum: pageNum, genreId: genreId, year: year, regionId: regionId, searchContent: searchContent});
+            {pageNum: pageNum, categoryId: categoryId, year: year, regionId: regionId, searchContent: searchContent});
     }
 
     //搜索栏提交表单
     function loaddata() {
         var pageNum = $("#pageNum").val();
-        var genreId = $("#genreId").val();
+        var categoryId = $("#categoryId").val();
         var year = $("#year").val();
         var regionId = $("#regionId").val();
         document.getElementById('searchContent').value = '';
         //局部刷新的必须的元素id必须调用load
         $("#blogList").load(/*[[@{/type/showAll/search}]]*/"/type/showAll/search",
-            {pageNum: pageNum, genreId: genreId, year: year, regionId: regionId});
+            {pageNum: pageNum, categoryId: genreId, year: year, regionId: regionId});
     }
 
 

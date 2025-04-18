@@ -98,7 +98,7 @@
                 <td th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}" >2017-10-02 09:45</td>
 <!--                <td th:if="${comment.parentCommentUserInfoNickname}" th:text="${comment.parentCommentUserInfoNickname}"></td>-->
                 <td th:text="${comment.userInfo.nickname}"></td>
-                <td th:text="${comment.movice.title}">2017-10-02 09:45</td>
+                <td th:text="${comment.movie.title}">2017-10-02 09:45</td>
                 <td>
                     <a href="#" th:href="@{'/admin/remark/deleteById?id='+${comment.id}}" onclick="return confirmDel()"
                        class="ui mini red basic button">删除</a>
@@ -117,7 +117,7 @@
                         <a onclick="page(this)" class=" item"
                            th:attr="pageNum = ${pageInfo.pageNum + 1 > pageInfo.pages ? pageInfo.pages : pageInfo.pageNum + 1}">下一页</a>
                     </div>
-<!--                    <a href="#" th:href="@{/admin/movice/toAdd}" class="ui mini right floated teal basic button">新增</a>-->
+<!--                    <a href="#" th:href="@{/admin/movie/toAdd}" class="ui mini right floated teal basic button">新增</a>-->
                 </th>
             </tr>
             </tfoot>

@@ -23,18 +23,18 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<Type> selectByMoviceId(int id) throws IOException {
-        return typeMapper.selectByMoviceId(id);
+    public List<Type> selectByMovieId(int id) throws IOException {
+        return typeMapper.selectByMovieId(id);
     }
 
     @Override
-    public int insertMoviceType(Integer movieId, Integer genresId) {
-        return typeMapper.insertMoviceType(movieId,genresId);
+    public int insertMovieType(Integer movieId, Integer categoryId) {
+        return typeMapper.insertMovieType(movieId, categoryId);
     }
 
     @Override
-    public int updateMoviceType(Integer movieId, Integer genresId) {
-        return typeMapper.updateMoviceType(movieId,genresId);
+    public int updateMovieType(Integer movieId, Integer categoryId) {
+        return typeMapper.updateMovieType(movieId, categoryId);
     }
 
     @Override
@@ -69,13 +69,13 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public int deleteByMoviceId(int id) {
-        return typeMapper.deleteByMoviceId(id);
+    public int deleteByMovieId(int id) {
+        return typeMapper.deleteByMovieId(id);
     }
 
     @Override
-    public int addByMoviceIdTypeId(int id1, int id2) {
-        return typeMapper.addByMoviceIdTypeId(id1,id2);
+    public int addByMovieIdTypeId(int id1, int id2) {
+        return typeMapper.addByMovieIdTypeId(id1,id2);
     }
 
 

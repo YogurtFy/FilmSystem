@@ -22,7 +22,7 @@ public class RegionController {
 //        //2.查找电影的地区
 //
 //
-//        PageInfo<Movice> blogPageInfo;
+//        PageInfo<Movie> blogPageInfo;
 //        if( typeId ==0) {
 //            //查询博客信息:
 //            blogPageInfo = blogService.selectAll(pageNum, pageSize,searchContent);

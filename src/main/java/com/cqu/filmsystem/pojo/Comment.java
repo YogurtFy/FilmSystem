@@ -23,7 +23,7 @@ public class Comment {
 
     private UserInfo userInfo;
 
-    private Movice movice;
+    private Movie movie;
 
     private String  parentCommentUserInfoNickname;
 
@@ -96,12 +96,12 @@ public class Comment {
         this.userInfo = userInfo;
     }
 
-    public Movice getMovice() {
-        return movice;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovice(Movice movice) {
-        this.movice = movice;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Comment {
 //                ", parentComment=" + parentComment +
                 ", replyList=" + replyList +
                 ", userInfo=" + userInfo +
-                ", movice=" + movice +
+                ", movie=" + movie +
                 ", parentCommentUserInfoNickname='" + parentCommentUserInfoNickname + '\'' +
                 ", parentCommentUserInfoId=" + parentCommentUserInfoId +
                 '}';

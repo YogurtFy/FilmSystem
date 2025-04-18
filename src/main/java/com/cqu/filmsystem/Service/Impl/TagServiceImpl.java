@@ -1,10 +1,9 @@
 package com.cqu.filmsystem.Service.Impl;
 
 import com.github.pagehelper.PageHelper;
-import com.cqu.filmsystem.Mapper.MoviceMapper;
+import com.cqu.filmsystem.Mapper.MovieMapper;
 import com.cqu.filmsystem.Mapper.TagMapper;
 import com.cqu.filmsystem.Service.TagService;
-import com.cqu.filmsystem.pojo.Movice;
 import com.cqu.filmsystem.pojo.MovieTag;
 import com.cqu.filmsystem.pojo.Tag;
 import org.apache.ibatis.io.Resources;
@@ -30,7 +29,7 @@ public class TagServiceImpl implements TagService {
     TagMapper tagMapper;
 
     @Autowired
-    private MoviceMapper moviceMapper;
+    private MovieMapper movieMapper;
 
     @Override
     public List<Tag> selectAll() {
@@ -38,23 +37,23 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public int UserAddMovieTag(int moviceId, int tagId, int userId) {
-        return tagMapper.UserAddMovieTag(moviceId,tagId,userId);
+    public int UserAddMovieTag(int movieId, int tagId, int userId) {
+        return tagMapper.UserAddMovieTag(movieId,tagId,userId);
     }
 
     @Override
-    public List<MovieTag> selectUserMovieTagLive(int moviceId, int tagId, int userId) {
-        return tagMapper.selectUserMovieTagLive(moviceId,tagId,userId);
+    public List<MovieTag> selectUserMovieTagLive(int movieId, int tagId, int userId) {
+        return tagMapper.selectUserMovieTagLive(movieId,tagId,userId);
     }
 
     @Override
-    public List<Tag> selectTagByUserId(int userId, int moviceId) {
-        return tagMapper.selectTagByUserId(userId,moviceId);
+    public List<Tag> selectTagByUserId(int userId, int movieId) {
+        return tagMapper.selectTagByUserId(userId, movieId);
     }
 
     @Override
-    public int deleteByThreeID(int moviceId, int tagId, int userId) {
-        return tagMapper.deleteByThreeID(moviceId,tagId,userId);
+    public int deleteByThreeID(int movieId, int tagId, int userId) {
+        return tagMapper.deleteByThreeID(movieId,tagId,userId);
     }
 
     @Override

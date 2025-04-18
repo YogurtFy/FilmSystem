@@ -50,7 +50,7 @@
   <!--中间内容-->
   <div  class="m-container-small m-padded-tb-big m-opacity">
     <div class="ui container">
-      <form id="saveForm" action="#" th:action="@{/admin/movice/add}" method="post" class="ui form">
+      <form id="saveForm" action="#" th:action="@{/admin/movie/add}" method="post" class="ui form">
 
 
 
@@ -106,7 +106,7 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">分类</div>
                 <div class="menu">
-                  <div class="item" th:each="t:${types}" data-value="1" th:data-value="${t.genreId}" th:text="${t.genreName}">java</div>
+                  <div class="item" th:each="t:${types}" data-value="1" th:data-value="${t.categoryId}" th:text="${t.categoryName}">java</div>
                 </div>
               </div>
             </div>

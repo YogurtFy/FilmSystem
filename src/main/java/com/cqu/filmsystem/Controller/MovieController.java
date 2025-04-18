@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.cqu.filmsystem.Service.Impl.*;
-import com.cqu.filmsystem.Service.MoviceService;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.Service.SysLogService;
 import com.cqu.filmsystem.Service.TagService;
 import com.cqu.filmsystem.pojo.*;
@@ -31,12 +31,12 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/movice")
-public class MoviceController {
+@RequestMapping("/movie")
+public class MovieController {
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
     @Autowired
     @Qualifier("typeServiceImpl")
@@ -105,11 +105,11 @@ public class MoviceController {
             if (!timeSpentNode.isMissingNode() && !movieIdNode.isMissingNode())  {
                 // 获取timeSpent的字符串值，并清除多余的双引号
                 String timeSpentStr = timeSpentNode.asText().replace("\"", "");
-                String moviceIdStr = movieIdNode.asText().replace("\"", "");
+                String movieIdStr = movieIdNode.asText().replace("\"", "");
 
                 // 将字符串转换成浮点数 和整数
                 double timeSpentMins = Double.parseDouble(timeSpentStr);
-                int moviceId = Integer.parseInt(moviceIdStr);
+                int movieId = Integer.parseInt(movieIdStr);
                 System.out.println("Time spent on page: " + timeSpentMins + " minutes");
 
                 Syslog syslog = new Syslog();
@@ -141,11 +141,11 @@ public class MoviceController {
                          @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize ,
                          Model model , HttpServletRequest request) throws IOException {
 
-        PageInfo<Movice> select = moviceService.select(pageNum,pageSize);
+        PageInfo<Movie> select = movieService.select(pageNum,pageSize);
         model.addAttribute("pageInfo",select);
 
         //---------------------------------------------0.热门推荐-----------------------------------------
-        PageInfo<Movice> movicePageInfo = recommendService.popularRecommendations(pageNum, pageSize);
+        PageInfo<Movie> moviePageInfo = recommendService.popularRecommendations(pageNum, pageSize);
 
 
         //---------------------------------------------1.个性推荐-----------------------------------------
@@ -154,13 +154,13 @@ public class MoviceController {
             HttpSession session = request.getSession(false);
             UserInfo userInfo = new UserInfo();
             userInfo = (UserInfo) session.getAttribute("user");
-            PageInfo<Movice> movicePageInfo1 = recommendService.userPersonalizedRecommendations(userInfo.getNickname(),userInfo.getId(),pageNum,pageSize);
-            if(movicePageInfo1.getList().size()<5 && pageNum==1 )
+            PageInfo<Movie> moviePageInfo1 = recommendService.userPersonalizedRecommendations(userInfo.getNickname(),userInfo.getId(),pageNum,pageSize);
+            if(moviePageInfo1.getList().size()<5 && pageNum==1 )
             {
-                movicePageInfo1=movicePageInfo;
-                movicePageInfo1.setTotal(5);
+                moviePageInfo1 = moviePageInfo;
+                moviePageInfo1.setTotal(5);
             }
-            model.addAttribute("pageInfo",movicePageInfo1);
+            model.addAttribute("pageInfo", moviePageInfo1);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -173,8 +173,8 @@ public class MoviceController {
             userInfo = (UserInfo) session.getAttribute("user");
             model.addAttribute("user", userInfo);
             //查询用户的收藏夹
-            List<Movice> movices = moviceService.selectFavorites(Math.toIntExact(userInfo.getId()));
-            model.addAttribute("userFavorites",movices);
+            List<Movie> movies = movieService.selectFavorites(Math.toIntExact(userInfo.getId()));
+            model.addAttribute("userFavorites", movies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,7 +186,7 @@ public class MoviceController {
             types = types.subList(0, 8);
         }
         model.addAttribute("types",types);
-        model.addAttribute("HotpageInfo",movicePageInfo);
+        model.addAttribute("HotpageInfo", moviePageInfo);
         return "index";
     }
 
@@ -196,11 +196,11 @@ public class MoviceController {
                              @RequestParam(name = "searchContent", required = false, defaultValue = "") String searchContent,
                              Model model, HttpServletRequest request) throws IOException {
 
-        PageInfo<Movice> select = moviceService.select(pageNum,pageSize);
+        PageInfo<Movie> select = movieService.select(pageNum,pageSize);
         model.addAttribute("pageInfo",select);
 
         //---------------------------------------------0.热门推荐-----------------------------------------
-        PageInfo<Movice> movicePageInfo = recommendService.popularRecommendations(pageNum, pageSize);
+        PageInfo<Movie> moviePageInfo = recommendService.popularRecommendations(pageNum, pageSize);
 
 
         //---------------------------------------------1.个性推荐-----------------------------------------
@@ -210,12 +210,12 @@ public class MoviceController {
             HttpSession session = request.getSession(false);
             UserInfo userInfo = new UserInfo();
             userInfo = (UserInfo) session.getAttribute("user");
-            PageInfo<Movice> movicePageInfo1 = recommendService.userPersonalizedRecommendations(userInfo.getNickname(),userInfo.getId(),pageNum,pageSize);
-            if(movicePageInfo1.getList().size()<5 && pageNum==1)
+            PageInfo<Movie> moviePageInfo1 = recommendService.userPersonalizedRecommendations(userInfo.getNickname(),userInfo.getId(),pageNum,pageSize);
+            if(moviePageInfo1.getList().size()<5 && pageNum==1)
             {
-                movicePageInfo1=movicePageInfo;
+                moviePageInfo1 = moviePageInfo;
             }
-            model.addAttribute("pageInfo",movicePageInfo1);
+            model.addAttribute("pageInfo", moviePageInfo1);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -228,8 +228,8 @@ public class MoviceController {
             userInfo = (UserInfo) session.getAttribute("user");
             model.addAttribute("user", userInfo);
             //查询用户的收藏夹
-            List<Movice> movices = moviceService.selectFavorites(Math.toIntExact(userInfo.getId()));
-            model.addAttribute("userFavorites",movices);
+            List<Movie> movies = movieService.selectFavorites(Math.toIntExact(userInfo.getId()));
+            model.addAttribute("userFavorites", movies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,7 +241,7 @@ public class MoviceController {
             types = types.subList(0, 8);
         }
         model.addAttribute("types",types);
-        model.addAttribute("HotpageInfo",movicePageInfo);
+        model.addAttribute("HotpageInfo", moviePageInfo);
 
         return "index:: blogList";
     }
@@ -274,26 +274,26 @@ public class MoviceController {
         if (oldViewKey == null) {
             RedisUtils.setTTl(viewKey, userInfo.getNickname() + userInfo.getEmail(), 30);
             // 浏览量+1
-            moviceService.addView(id);
+            movieService.addView(id);
         } else {
             System.out.println("30秒内防刷");
         }
 
 
         //2.查询某一条电影信息
-        Movice movies = moviceService.selectByid(id);
+        Movie movies = movieService.selectByid(id);
 
         System.out.println(movies);
         model.addAttribute("movie", movies);
 
 
         //3.查询类型
-        List<Type> types = typeService.selectByMoviceId(id);
+        List<Type> types = typeService.selectByMovieId(id);
         model.addAttribute("types",types);
 
 
         //4.获取演员信息
-        List<Actor> actors = actorService.selectByMoviceId(id);
+        List<Actor> actors = actorService.selectByMovieId(id);
         model.addAttribute("actors",actors);
 
         //5.查询评论
@@ -306,8 +306,8 @@ public class MoviceController {
 
 
         //6.查询用户是否搜藏
-        Movice movice = moviceService.selectFavorite(Math.toIntExact(userInfo.getId()), id);
-        model.addAttribute ("favorite",movice);
+        Movie movie = movieService.selectFavorite(Math.toIntExact(userInfo.getId()), id);
+        model.addAttribute ("favorite", movie);
 
         //7.查询所有标签
         List<Tag> tags = tagService.selectAllTagsWithCount();
@@ -315,12 +315,12 @@ public class MoviceController {
 
         //8.查询该电影的标签:
         List<Tag> tags1 = tagService.selectTagByUserId(Math.toIntExact(userInfo.getId()), id);
-        List<Integer> selectedGenreIds = new ArrayList<>();
+        List<Integer> selectedCategoryIds = new ArrayList<>();
         for (Tag tag: tags1)
         {
-            selectedGenreIds.add(tag.getId());
+            selectedCategoryIds.add(tag.getId());
         }
-        model.addAttribute("selectedGenreIds",selectedGenreIds);
+        model.addAttribute("selectedCategorys", selectedCategoryIds);
 
         try
         {
@@ -337,6 +337,8 @@ public class MoviceController {
 
         model.addAttribute ("tip",tip);
         System.out.println(tip);
+        System.out.println("演员数量：" + actors.size());
+
         return "details";
 
     }
@@ -382,7 +384,7 @@ public class MoviceController {
         String tip ;
         try
         {
-            int i = moviceService.insertFavorite(Math.toIntExact(userInfo.getId()), movieId);
+            int i = movieService.insertFavorite(Math.toIntExact(userInfo.getId()), movieId);
             if (i>0)
             {
                 tip="收藏成功!";
@@ -400,7 +402,7 @@ public class MoviceController {
         String encodedTip = URLEncoder.encode(tip, StandardCharsets.UTF_8.toString());
         String idParam = "id=" + movieId; // 假设id是一个不需要编码的字符串或数字
 
-        return "redirect:http://localhost:8080/movice/details?tip=" + encodedTip + "&" + idParam;
+        return "redirect:http://localhost:8080/movie/details?tip=" + encodedTip + "&" + idParam;
 
     }
 
@@ -422,7 +424,7 @@ public class MoviceController {
         String tip ;
         try
         {
-            int i = moviceService.deleteFavorite(Math.toIntExact(userInfo.getId()), movieId);
+            int i = movieService.deleteFavorite(Math.toIntExact(userInfo.getId()), movieId);
             if (i>0)
             {
                 tip="取消成功!";
@@ -441,7 +443,7 @@ public class MoviceController {
         String encodedTip = URLEncoder.encode(tip, StandardCharsets.UTF_8.toString());
         String idParam = "id=" + movieId; // 假设id是一个不需要编码的字符串或数字
 
-        return "redirect:http://localhost:8080/movice/details?tip=" + encodedTip + "&" + idParam;
+        return "redirect:http://localhost:8080/movie/details?tip=" + encodedTip + "&" + idParam;
 
     }
 
@@ -460,9 +462,9 @@ public class MoviceController {
         }
 
         //查询用户的收藏夹
-        List<Movice> movices = moviceService.selectFavorites(Math.toIntExact(userInfo.getId()));
-        model.addAttribute("movices",movices);
-        model.addAttribute("count",movices.size());
+        List<Movie> movies = movieService.selectFavorites(Math.toIntExact(userInfo.getId()));
+        model.addAttribute("movies", movies);
+        model.addAttribute("count", movies.size());
         return "favorite";
 
     }
@@ -485,8 +487,8 @@ public class MoviceController {
 
         Comment comment = new Comment();
         comment.setContent(content);
-        comment.setMovice(new Movice());
-        comment.getMovice().setId(Math.toIntExact(blogId));
+        comment.setMovie(new Movie());
+        comment.getMovie().setId(Math.toIntExact(blogId));
         comment.setParentComment(new Comment());
         comment.getParentComment().setId(parentCommentId);
         comment.setUserInfo(userInfo);
@@ -521,22 +523,22 @@ public class MoviceController {
 
             //8.查询该电影的标签:
             List<Tag> tags1 = tagService.selectTagByUserId(Math.toIntExact(userInfo.getId()), movieId);
-            List<Integer> selectedGenreIds = new ArrayList<>();   //为已存在数据的标签id
+            List<Integer> selectedCategoryIds = new ArrayList<>();   //为已存在数据的标签id
             for (Tag tag: tags1)
             {
-                selectedGenreIds.add(tag.getId());
+                selectedCategoryIds.add(tag.getId());
             }
             //先遍历之前的电影标签 如果不存在tagIds中就删掉
-            for (Integer i: selectedGenreIds) {
+            for (Integer i: selectedCategoryIds) {
                 if (!tagIds.contains(i))
                 {
                     tagService.deleteByThreeID(movieId,i,userId);
                 }
             }
-            //后遍历tagIds标签 如果不存在selectedGenreIds中就添加进去
+            //后遍历tagIds标签 如果不存在selectedCategoryIds中就添加进去
             for (Integer i: tagIds)
             {
-                if (!selectedGenreIds.contains(i)){
+                if (!selectedCategoryIds.contains(i)){
                     tagService.UserAddMovieTag(movieId,i,userId);
                 }
             }
@@ -547,7 +549,7 @@ public class MoviceController {
         }
         String encodedTip = URLEncoder.encode(tip, StandardCharsets.UTF_8.toString());
         String idParam = "id=" + movieId; // 假设id是一个不需要编码的字符串或数字
-        return "redirect:http://localhost:8080/movice/details?tip=" + encodedTip + "&" + idParam;
+        return "redirect:http://localhost:8080/movie/details?tip=" + encodedTip + "&" + idParam;
     }
 
 }

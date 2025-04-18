@@ -20,7 +20,7 @@
             <result column="head_portrait" jdbcType="VARCHAR" property="headPortrait"/>
         </association>
 
-        <association column="movies_id" javaType="com.cqu.filmsystem.pojo.Movice" property="movice">
+        <association column="movies_id" javaType="com.cqu.filmsystem.pojo.Movie" property="movie">
             <id column="mid" jdbcType="BIGINT" property="id"/>
             <id column="title" jdbcType="VARCHAR" property="title"/>
             <id column="director" jdbcType="VARCHAR" property="director"/>
@@ -34,7 +34,7 @@
         select c.id, c.content, c.create_time, u.nickname, u.email, b.id as bid, b.title
         from comment c
         left join t_user u on c.user_id = u.id
-        left join movies b on c.movies_id = b.id
+        left join movies b on c.movie_id = b.id
         order by c.create_time DESC
     </select>
 
@@ -42,7 +42,7 @@
     <select id="selectByBlogIdAndParentCommentIsNull" resultMap="CommentResultMap" parameterType="Integer">
         select c.id, c.content, c.create_time, u.id as uid, u.nickname, u.head_portrait
         from comment c left join t_user u on c.user_id = u.id
-        where c.movies_id = #{id} and parent_comment_id is null order by c.create_time DESC
+        where c.movie_id = #{id} and parent_comment_id is null order by c.create_time DESC
     </select>
 
 
@@ -65,7 +65,7 @@
         select c.id, c.content, c.create_time, u.nickname, u.email, b.id as bid, b.title
         from comment c
         left join t_user u on c.user_id = u.id
-        left join movies b on c.movies_id = b.id
+        left join movies b on c.movie_id = b.id
         <where>
             <if test="content != null">
                 and c.content like #{content}
@@ -87,7 +87,7 @@
     <insert id="insert" parameterType="Comment">
         insert into comment (id, content, create_time,parent_comment_id, user_id,movies_id
         )
-        values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{parentComment.id,jdbcType=BIGINT}, #{userInfo.id,jdbcType=BIGINT},#{movice.id,jdbcType=INTEGER}
+        values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{parentComment.id,jdbcType=BIGINT}, #{userInfo.id,jdbcType=BIGINT},#{movie.id,jdbcType=INTEGER}
                )
     </insert>
 

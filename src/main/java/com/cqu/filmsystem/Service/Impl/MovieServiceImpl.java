@@ -1,11 +1,11 @@
 package com.cqu.filmsystem.Service.Impl;
 
+import com.cqu.filmsystem.pojo.Movie;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.Mapper.MoviceMapper;
+import com.cqu.filmsystem.Mapper.MovieMapper;
 import com.cqu.filmsystem.Mapper.RatingMapper;
-import com.cqu.filmsystem.Service.MoviceService;
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,31 +16,31 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class MoviceServiceImpl implements MoviceService {
+public class MovieServiceImpl implements MovieService {
 
     @Autowired
-     MoviceMapper moviceMapper;
+    MovieMapper movieMapper;
 
     @Autowired
      RatingMapper ratingMapper;
 
     //    ------------------------------------------基于内容的协同过滤-----------------------------------------------------------------------
     @Override
-    public List<Movice> getAllMovies() {
-        return moviceMapper.getAllMovies();
+    public List<Movie> getAllMovies() {
+        return movieMapper.getAllMovies();
     }
 
     @Override
     public Map<Integer, List<Rating>> getMovieRatings() {
-        List<Rating> ratings = moviceMapper.getMovieRatings();
+        List<Rating> ratings = movieMapper.getMovieRatings();
         //ratings列表按电影ID进行分组，每组的键是电影ID，值是该电影ID对应的所有评分对象的列表
         return ratings.stream().collect(Collectors.groupingBy(Rating::getMovieId));
     }
 
     @Override
     public double calculateAdjustedCosineSimilarity(
-            Movice movie1,
-            Movice movie2,
+            Movie movie1,
+            Movie movie2,
             Map<Integer, List<Rating>> movieRatingsMap,
             Map<Long, List<Rating>> userRatingsMap) {
 
@@ -124,77 +124,77 @@ public class MoviceServiceImpl implements MoviceService {
     //    ------------------------------------------基于内容的协同过滤-----------------------------------------------------------------------
 
     @Override
-    public PageInfo<Movice> select(Integer pageNum, Integer pageSize) throws IOException {
+    public PageInfo<Movie> select(Integer pageNum, Integer pageSize) throws IOException {
 
 
         PageHelper.startPage (pageNum, pageSize);
-        List<Movice> select = moviceMapper.select();
-        PageInfo<Movice> pageInfo = new PageInfo<> (select, 5);
+        List<Movie> select = movieMapper.select();
+        PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
         return pageInfo;
     }
 
     @Override
-    public PageInfo<Movice> selectByCondition(Integer pageNum, Integer pageSize, Integer genreId, Integer regionId,
-                                              String startDate, String endDate,String searchContent) throws IOException {
+    public PageInfo<Movie> selectByCondition(Integer pageNum, Integer pageSize, Integer categoryId, Integer regionId,
+                                             String startDate, String endDate, String searchContent) throws IOException {
         PageHelper.startPage (pageNum, pageSize);
         searchContent= "%"+searchContent+"%";
-        List<Movice> select = moviceMapper.selectByCondition(pageNum,pageSize,genreId,regionId,startDate,endDate,searchContent);
-        PageInfo<Movice> pageInfo = new PageInfo<> (select, 5);
+        List<Movie> select = movieMapper.selectByCondition(pageNum,pageSize, categoryId,regionId,startDate,endDate,searchContent);
+        PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
         return pageInfo;
     }
 
     @Override
     public int addView(int id) {
-        return moviceMapper.addView(id);
+        return movieMapper.addView(id);
     }
 
     @Override
-    public Movice selectByid(int id) throws IOException {
-        return moviceMapper.selectByid(id);
+    public Movie selectByid(int id) throws IOException {
+        return movieMapper.selectByid(id);
     }
 
     @Override
-    public Movice selectFavorite(int userId, int movieId) {
-        return moviceMapper.selectFavorite(userId,movieId);
+    public Movie selectFavorite(int userId, int movieId) {
+        return movieMapper.selectFavorite(userId,movieId);
     }
 
     @Override
     public int insertFavorite(int userId, int movieId) {
-        return moviceMapper.insertFavorite(userId,movieId);
+        return movieMapper.insertFavorite(userId,movieId);
     }
 
     @Override
     public int deleteFavorite(int userId, int movieId) {
-        return moviceMapper.deleteFavorite(userId,movieId);
+        return movieMapper.deleteFavorite(userId,movieId);
     }
 
     @Override
-    public List<Movice> selectFavorites(Integer userId) {
-      return  moviceMapper.selectFavorites(userId);
+    public List<Movie> selectFavorites(Integer userId) {
+      return  movieMapper.selectFavorites(userId);
     }
 
     @Override
-    public List<Movice> selectDirector() {
-        return moviceMapper.selectDirector();
+    public List<Movie> selectDirector() {
+        return movieMapper.selectDirector();
     }
 
     @Override
-    public PageInfo<Movice> selectAll(Integer pageNum, Integer pageSize,String title, String director) {
+    public PageInfo<Movie> selectAll(Integer pageNum, Integer pageSize, String title, String director) {
 
 
         title= "%"+title+"%";
         director= "%"+director+"%";
 
         PageHelper.startPage (pageNum, pageSize);
-        List<Movice> select = moviceMapper.selectAll(title,director);
-        PageInfo<Movice> pageInfo = new PageInfo<> (select, 5);
+        List<Movie> select = movieMapper.selectAll(title,director);
+        PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
 
         return  pageInfo;
     }
 
     @Override
-    public int add(Movice movice) {
-        return moviceMapper.add(movice);
+    public int add(Movie movie) {
+        return movieMapper.add(movie);
     }
 
 
@@ -205,17 +205,17 @@ public class MoviceServiceImpl implements MoviceService {
     }
 
     @Override
-    public int update(Movice blog) {
-        return moviceMapper.update(blog);
+    public int update(Movie blog) {
+        return movieMapper.update(blog);
     }
 
 
     //根据标签查询电影
     @Override
-    public PageInfo<Movice> selectByTagId(Integer pageNum, Integer pageSize, Integer tagId) {
+    public PageInfo<Movie> selectByTagId(Integer pageNum, Integer pageSize, Integer tagId) {
         PageHelper.startPage (pageNum, pageSize);
-        List<Movice> select = moviceMapper.selectByTagId(tagId);
-        PageInfo<Movice> pageInfo = new PageInfo<> (select, 5);
+        List<Movie> select = movieMapper.selectByTagId(tagId);
+        PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
         return pageInfo;
     }
 }

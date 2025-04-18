@@ -48,7 +48,7 @@ public class UserController {
                 ServletContext servletContext = request.getServletContext();
                 servletContext.setAttribute("user", login);
 
-                request.getRequestDispatcher("/movice/showAll").forward(request,response);
+                request.getRequestDispatcher("/movie/showAll").forward(request,response);
                 return;
             }
             else
@@ -189,11 +189,11 @@ public class UserController {
 
 
         if (flag){
-            return "redirect:http://localhost:8080/movice/showAll";
+            return "redirect:http://localhost:8080/movie/showAll";
         }
         else
         {
-            return "redirect:http://localhost:8080/movice/showAll";
+            return "redirect:http://localhost:8080/movie/showAll";
         }
 
     }
@@ -365,7 +365,7 @@ public class UserController {
 
         model.addAttribute("message",message);
 
-        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/movice/showAll")
+        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/movie/showAll")
                 .queryParam("message", message)
                 .toUriString();
         return "redirect:" + redirectUrl;

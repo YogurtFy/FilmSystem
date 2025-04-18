@@ -3,7 +3,6 @@ package com.cqu.filmsystem.Service;
 
 import com.cqu.filmsystem.pojo.MovieTag;
 import com.cqu.filmsystem.pojo.Tag;
-import org.apache.ibatis.annotations.Param;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,13 +16,13 @@ public interface TagService {
 
 
     //用户对电影打标签
-    int UserAddMovieTag( int moviceId, int tagId, int userId);
+    int UserAddMovieTag(int movieId, int tagId, int userId);
 
-    List<MovieTag> selectUserMovieTagLive( int moviceId, int tagId, int userId);
+    List<MovieTag> selectUserMovieTagLive(int movieId, int tagId, int userId);
 
-    List<Tag> selectTagByUserId(  int userId,int moviceId);
+    List<Tag> selectTagByUserId(  int userId,int movieId);
 
-    int  deleteByThreeID(int moviceId, int tagId, int userId);
+    int  deleteByThreeID(int movieId, int tagId, int userId);
 
 
     List<Tag> selectTag() throws IOException;

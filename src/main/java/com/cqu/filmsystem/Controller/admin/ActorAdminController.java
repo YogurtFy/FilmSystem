@@ -2,9 +2,9 @@ package com.cqu.filmsystem.Controller.admin;
 import com.github.pagehelper.PageInfo;
 import com.cqu.filmsystem.Service.ActorService;
 import com.cqu.filmsystem.Service.Impl.ActorServiceImpl;
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
+import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
 import com.cqu.filmsystem.Service.Impl.TypeServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.Actor;
 import com.cqu.filmsystem.pojo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ import java.io.IOException;
 public class ActorAdminController {
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
     @Autowired
     @Qualifier("typeServiceImpl")

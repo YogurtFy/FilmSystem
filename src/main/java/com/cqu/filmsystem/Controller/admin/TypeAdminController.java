@@ -1,8 +1,8 @@
 package com.cqu.filmsystem.Controller.admin;
 import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
+import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
 import com.cqu.filmsystem.Service.Impl.TypeServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.Type;
 import com.cqu.filmsystem.pojo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class TypeAdminController {
 
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
     @Autowired
     @Qualifier("typeServiceImpl")
@@ -142,7 +142,7 @@ public class TypeAdminController {
         try{
 
             //对分类信息进行修改
-            type.setGenreId(id);
+            type.setCategoryId(id);
             int update = typeService.update(type);
 
             message="修改成功！";

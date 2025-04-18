@@ -79,28 +79,28 @@
                 </div>
             </div>
 
-            <div  class="ui   padded vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="movice:${pageInfo.list}">
+            <div  class="ui   padded vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="movie:${pageInfo.list}">
                 <div class="ui mobile reversed stackable grid">
                     <div class="eleven wide column">
-                        <h3 class="ui header"><a href="#" th:href="@{'/movice/details?id='+${movice.id}}"
+                        <h3 class="ui header"><a href="#" th:href="@{'/movie/details?id='+${movie.id}}"
                                                  target="_blank" class="m-black"
-                                                 th:text="${movice.title}">你真的理解什么是财富自由吗</a>
+                                                 th:text="${movie.title}">你真的理解什么是财富自由吗</a>
                         </h3>
                         <p class="m-text"   th:inline="text">
-                            [[${#strings.substring(movice.description, 0, 100)}]]...</p>
+                            [[${#strings.substring(movie.description, 0, 100)}]]...</p>
                         <div class="ui grid">
                             <div class="eleven wide column">
                                 <div class="ui mini horizontal link list">
                                     <div class="item">
                                         <div class="content"><a href="#" class="header"
-                                                                th:text="${movice.director}">张鹏</a></div>
+                                                                th:text="${movie.director}">张鹏</a></div>
                                     </div>
                                     <div class="item">
                                         <i class="calendar icon"></i>
-                                        <span th:text="${#dates.format(movice.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
+                                        <span th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
                                     </div>
                                     <div class="item">
-                                        <i class="eye icon"></i> <span th:text="${movice.pageView}">2315</span>
+                                        <i class="eye icon"></i> <span th:text="${movie.pageView}">2315</span>
                                     </div>
                                 </div>
                             </div>
@@ -112,8 +112,8 @@
                     </div>
 
                     <div class="five wide column">
-                        <a href="#"   th:href="@{'/movice/details?id='+${movice.id}}"  target="_blank">
-                            <img src="../static/images/phone1.jpg"  alt="" th:src="${movice.picture}"
+                        <a href="#"   th:href="@{'/movie/details?id='+${movie.id}}"  target="_blank">
+                            <img src="../static/images/phone1.jpg"  alt="" th:src="${movie.picture}"
                                  class="ui rounded image">
                         </a>
                     </div>

@@ -1,10 +1,7 @@
 package com.cqu.filmsystem.Controller.admin;
 
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
 import com.cqu.filmsystem.Service.Impl.ParameterServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
 import com.cqu.filmsystem.Service.ParameterService;
-import com.cqu.filmsystem.pojo.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;

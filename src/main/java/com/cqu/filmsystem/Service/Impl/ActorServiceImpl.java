@@ -20,8 +20,8 @@ public class ActorServiceImpl implements ActorService {
 
 
     @Override
-    public List<Actor> selectByMoviceId(int id) throws IOException {
-        return actorMapper.selectByMoviceId(id);
+    public List<Actor> selectByMovieId(int id) throws IOException {
+        return actorMapper.selectByMovieId(id);
     }
 
 

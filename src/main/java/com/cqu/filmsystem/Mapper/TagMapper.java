@@ -28,17 +28,17 @@ public interface TagMapper {
 
 
      //用户对电影打标签
-     int UserAddMovieTag(@Param("moviceId") int moviceId,
+     int UserAddMovieTag(@Param("movieId") int movieId,
                          @Param("tagId") int tagId,
                          @Param("userId") int userId);
 
-     List<MovieTag> selectUserMovieTagLive(@Param("moviceId") int moviceId,
+     List<MovieTag> selectUserMovieTagLive(@Param("movieId") int movieId,
                                            @Param("tagId") int tagId,
                                            @Param("userId") int userId);
 
-     List<Tag> selectTagByUserId( @Param("userId") int userId,@Param("moviceId") int moviceId);
+     List<Tag> selectTagByUserId( @Param("userId") int userId,@Param("movieId") int movieId);
 
-     int  deleteByThreeID(@Param("moviceId") int moviceId,
+     int  deleteByThreeID(@Param("movieId") int movieId,
                           @Param("tagId") int tagId,
                           @Param("userId") int userId);
 

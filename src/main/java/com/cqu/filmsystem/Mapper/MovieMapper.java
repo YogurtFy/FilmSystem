@@ -1,9 +1,7 @@
 package com.cqu.filmsystem.Mapper;
 
-import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.pojo.Movie;
 import com.cqu.filmsystem.pojo.Rating;
-import com.cqu.filmsystem.pojo.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,14 +9,14 @@ import java.util.List;
 
 
 @Mapper
-public interface MoviceMapper {
+public interface MovieMapper {
 
-    List<Movice> select();
+    List<Movie> select();
 
-    List<Movice> selectByCondition(
+    List<Movie> selectByCondition(
             @Param("pageNum") Integer pageNum,
             @Param("pageSize") Integer pageSize,
-            @Param("genreId") Integer genreId,
+            @Param("categoryId") Integer categoryId,
             @Param("regionId") Integer regionId,
             @Param("startDate") String startDate,
             @Param("endDate") String endDate,
@@ -29,11 +27,11 @@ public interface MoviceMapper {
     public int addView(int id);
 
     //电影播放详情页
-    Movice selectByid(int id);
+    Movie selectByid(int id);
 
     //查询某个用户是否收藏该电影
-    Movice selectFavorite(   @Param("userId") Integer userId,
-                             @Param("movieId") Integer movieId);
+    Movie selectFavorite(@Param("userId") Integer userId,
+                         @Param("movieId") Integer movieId);
 
     //加入搜藏夹
     int insertFavorite(
@@ -44,27 +42,27 @@ public interface MoviceMapper {
     int deleteFavorite(@Param("userId") Integer userId,
                        @Param("movieId") Integer movieId);
 
-    List <Movice> selectFavorites(@Param("userId") Integer userId);
+    List <Movie> selectFavorites(@Param("userId") Integer userId);
 
 
-    List<Movice> selectDirector();
+    List<Movie> selectDirector();
 
-    List<Movice> selectAll(@Param("title") String title,
-                           @Param("director") String director);
+    List<Movie> selectAll(@Param("title") String title,
+                          @Param("director") String director);
 
-    int add(Movice movice);
+    int add(Movie movie);
 
 
-    int update(Movice movice);
+    int update(Movie movie);
 
     int delete(int id);
 
 
-    List<Movice> selectByTagId(Integer tagId);
+    List<Movie> selectByTagId(Integer tagId);
 
     //基于内容的协同过滤
     //查询所有电影
-    List<Movice> getAllMovies();
+    List<Movie> getAllMovies();
     List<Rating> getMovieRatings();
 
 

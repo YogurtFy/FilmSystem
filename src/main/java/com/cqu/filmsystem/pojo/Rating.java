@@ -1,6 +1,5 @@
 package com.cqu.filmsystem.pojo;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 public class Rating {
@@ -9,7 +8,7 @@ public class Rating {
     private Double rating;
     private Date ratingDate;
     private  UserInfo userInfo;
-    private Movice movice;
+    private Movie movie;
 
 
     public Long getUserId() {
@@ -52,12 +51,12 @@ public class Rating {
         this.userInfo = userInfo;
     }
 
-    public Movice getMovice() {
-        return movice;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovice(Movice movice) {
-        this.movice = movice;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class Rating {
                 ", rating=" + rating +
                 ", ratingDate=" + ratingDate +
                 ", userInfo=" + userInfo +
-                ", movice=" + movice +
+                ", movie=" + movie +
                 '}';
     }
 }

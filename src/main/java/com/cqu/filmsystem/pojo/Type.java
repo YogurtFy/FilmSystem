@@ -3,8 +3,8 @@ package com.cqu.filmsystem.pojo;
 import java.util.Objects;
 
 public class Type {
-    private int genreId;
-    private String genreName;
+    private int categoryId;
+    private String categoryName;
     private int movieCount;
 
 
@@ -13,24 +13,24 @@ public class Type {
 
 
     public Type(Integer tagId) {
-        this.genreId=tagId;
+        this.categoryId =tagId;
     }
 
 
-    public int getGenreId() {
-        return genreId;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setGenreId(int genreId) {
-        this.genreId = genreId;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getMovieCount() {
@@ -44,8 +44,8 @@ public class Type {
     @Override
     public String toString() {
         return "Type{" +
-                "genreId=" + genreId +
-                ", genreName='" + genreName + '\'' +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
                 ", movieCount=" + movieCount +
                 '}';
     }
@@ -55,11 +55,11 @@ public class Type {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Type type = (Type) o;
-        return genreId == type.genreId && movieCount == type.movieCount && Objects.equals(genreName, type.genreName);
+        return categoryId == type.categoryId && movieCount == type.movieCount && Objects.equals(categoryName, type.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(genreId, genreName, movieCount);
+        return Objects.hash(categoryId, categoryName, movieCount);
     }
 }

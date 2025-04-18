@@ -1,10 +1,10 @@
 package com.cqu.filmsystem.Controller;
+import com.cqu.filmsystem.pojo.Movie;
 import com.github.pagehelper.PageInfo;
-import com.cqu.filmsystem.Service.Impl.MoviceServiceImpl;
+import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
 import com.cqu.filmsystem.Service.Impl.RegionServiceImpl;
 import com.cqu.filmsystem.Service.Impl.TypeServiceImpl;
-import com.cqu.filmsystem.Service.MoviceService;
-import com.cqu.filmsystem.pojo.Movice;
+import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.Region;
 import com.cqu.filmsystem.pojo.Type;
 import com.cqu.filmsystem.pojo.UserInfo;
@@ -29,8 +29,8 @@ public class TypeController {
 
 
     @Autowired
-    @Qualifier("moviceServiceImpl")
-    MoviceService moviceService= new MoviceServiceImpl();
+    @Qualifier("movieServiceImpl")
+    MovieService movieService = new MovieServiceImpl();
 
     @Autowired
     @Qualifier("typeServiceImpl")
@@ -65,7 +65,7 @@ public class TypeController {
     @RequestMapping("/showAll")
     public String showAll( @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                           @RequestParam(name = "genreId", required = false, defaultValue = "0") Integer genreId,
+                           @RequestParam(name = "categoryId", required = false, defaultValue = "0") Integer categoryId,
                            @RequestParam(name = "year", required = false, defaultValue = "全部") String year,
                            @RequestParam(name = "regionId", required = false, defaultValue = "0") Integer regionId,
                            @RequestParam(name = "searchContent", required = false, defaultValue = "") String searchContent,
@@ -91,16 +91,16 @@ public class TypeController {
             e.printStackTrace();
         }
 
-        PageInfo<Movice> PageInfo;
-        if( genreId ==0 && year.equals("全部") && regionId==0 && searchContent.equals("")) {
+        PageInfo<Movie> PageInfo;
+        if( categoryId ==0 && year.equals("全部") && regionId==0 && searchContent.equals("")) {
 
             //默认查询电影全部信息:
-            PageInfo = moviceService.select(pageNum,pageSize);
+            PageInfo = movieService.select(pageNum,pageSize);
 
         }else
         {
             //根据条件查询电影信息
-            PageInfo = moviceService.selectByCondition(pageNum,pageSize,genreId,regionId,dates[0],dates[1],searchContent);
+            PageInfo = movieService.selectByCondition(pageNum,pageSize, categoryId,regionId,dates[0],dates[1],searchContent);
         }
         model.addAttribute("pageInfo",PageInfo);
         model.addAttribute("types",types);
@@ -115,7 +115,7 @@ public class TypeController {
     @RequestMapping("/showAll/search")
     public String showAllAdd( @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                              @RequestParam(name = "genreId", required = false, defaultValue = "0") Integer genreId,
+                              @RequestParam(name = "categoryId", required = false, defaultValue = "0") Integer categoryId,
                               @RequestParam(name = "year", required = false, defaultValue = "全部") String year,
                               @RequestParam(name = "regionId", required = false, defaultValue = "0") Integer regionId,
                               @RequestParam(name = "searchContent", required = false, defaultValue = "") String searchContent,
@@ -124,16 +124,16 @@ public class TypeController {
         //3.对年代进行处理  确定开始和结束日期  dates[0] 开始日期   dates[1]结束日期
         String[] dates = DECADES_MAP.get(year);
 
-        PageInfo<Movice> PageInfo;
-        if( genreId ==0 && year.equals("全部") && regionId==0 && searchContent.equals("")) {
+        PageInfo<Movie> PageInfo;
+        if( categoryId ==0 && year.equals("全部") && regionId==0 && searchContent.equals("")) {
 
             //默认查询电影全部信息:
-            PageInfo = moviceService.select(pageNum,pageSize);
+            PageInfo = movieService.select(pageNum,pageSize);
 
         }else
         {
             //根据条件查询电影信息
-            PageInfo = moviceService.selectByCondition(pageNum,pageSize,genreId,regionId,dates[0],dates[1],searchContent);
+            PageInfo = movieService.selectByCondition(pageNum,pageSize, categoryId,regionId,dates[0],dates[1],searchContent);
         }
 
         model.addAttribute("pageInfo",PageInfo);

@@ -56,12 +56,12 @@
 
 <!--            <h3 class="ui center aligned header" th:text="${map.key}">2017</h3>-->
             <div class="ui fluid vertical menu">
-                <a th:each="movice:${movices}" href="#" th:href="@{'/movice/details?id='+${movice.id}}" target="_blank" class="item">
+                <a th:each="movie:${movies}" href="#" th:href="@{'/movie/details?id='+${movie.id}}" target="_blank" class="item">
           <span>
-            <i class="mini teal circle icon"></i><span th:text="${movice.title}">海王</span>
-            <div class="ui teal basic left pointing label m-padded-mini " th:text="${movice.averageRating}"></div>
+            <i class="mini teal circle icon"></i><span th:text="${movie.title}">海王</span>
+            <div class="ui teal basic left pointing label m-padded-mini " th:text="${movie.averageRating}"></div>
           </span>
-                    <div class="ui orange basic left pointing label m-padded-mini " th:text="${movice.director}">詹姆斯·温</div>
+                    <div class="ui orange basic left pointing label m-padded-mini " th:text="${movie.director}">詹姆斯·温</div>
                 </a>
             </div>
 

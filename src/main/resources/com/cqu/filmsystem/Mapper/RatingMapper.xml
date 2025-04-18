@@ -12,18 +12,18 @@
 
 
     <insert id="insert">
-        insert into movie_ratings(user_id,movie_id,rating) values (#{userId}, #{moviceId}, #{rating})
+        insert into movie_ratings(user_id,movie_id,rating) values (#{userId}, #{movieId}, #{rating})
     </insert>
 
     <select id="select" resultMap="RatingResultMap">
-        select * from  movie_ratings where user_id=#{userId} and movie_id=#{moviceId}
+        select * from  movie_ratings where user_id=#{userId} and movie_id=#{movieId}
 
     </select>
 
     <update id="update">
         UPDATE movie_ratings
         SET rating=#{rating}
-        where user_id=#{userId} and movie_id=#{moviceId}
+        where user_id=#{userId} and movie_id=#{movieId}
     </update>
 
     <!-- 基于内容的协同过滤   -->

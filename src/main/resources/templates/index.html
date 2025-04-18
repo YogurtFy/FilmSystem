@@ -76,20 +76,20 @@
 
                 <!--content-->
                 <div class="ui attached  segment">
-                    <div class="ui padded vertical segment m-padded-tb-large m-opacity" th:each="movice:${pageInfo.list}" >
+                    <div class="ui padded vertical segment m-padded-tb-large m-opacity" th:each="movie:${pageInfo.list}" >
                         <div class="ui mobile reversed stackable grid">
                             <div class="eleven wide column">
-                                <h3 class="ui header"><a href="#"  th:href="@{'/movice/details?id='+${movice.id}}"
-                                                         target="_blank" class="m-black" th:text="${movice.title}">你真的理解什么是财富自由吗</a>
-<!--                                    <a href="/movice/favorite"   th:if="${favorite == null && session.user!=null}" >-->
+                                <h3 class="ui header"><a href="#"  th:href="@{'/movie/details?id='+${movie.id}}"
+                                                         target="_blank" class="m-black" th:text="${movie.title}">你真的理解什么是财富自由吗</a>
+<!--                                    <a href="/movie/favorite"   th:if="${favorite == null && session.user!=null}" >-->
 <!--                                        <button style="float: right" class="ui mini red basic button" > <i class="heart outline icon"></i>收藏-->
 <!--                                        </button>-->
 <!--                                    </a>-->
                                 </h3>
                                 <p class="m-text" th:inline="text">
-                                    [[${movice.description != null && movice.description.length() > 60
-                                    ? #strings.substring(movice.description, 0, 60) + '...'
-                                    : (movice.description == null ? '' : movice.description)}]]
+                                    [[${movie.description != null && movie.description.length() > 60
+                                    ? #strings.substring(movie.description, 0, 60) + '...'
+                                    : (movie.description == null ? '' : movie.description)}]]
                                 </p>
 
                                 <div class="ui grid">
@@ -99,14 +99,14 @@
 <!--                                                <img src="../static/images/huge.jpg"-->
 <!--                                                      alt=""-->
 <!--                                                     class="ui avatar image">-->
-                                                <div class="content"><a href="#" class="header"  th:text="${movice.director}">张</a></div>
+                                                <div class="content"><a href="#" class="header"  th:text="${movie.director}">张</a></div>
                                             </div>
                                             <div class="item">
                                                 <i class="calendar icon"></i>
-                                                <span th:text="${#dates.format(movice.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
+                                                <span th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd')}">2020-05-05</span>
                                             </div>
                                             <div class="item">
-                                                <i class="eye icon" ></i> <span  th:text="${movice.pageView}">2315</span>
+                                                <i class="eye icon" ></i> <span  th:text="${movie.pageView}">2315</span>
                                             </div>
                                         </div>
                                     </div>
@@ -120,8 +120,8 @@
                             </div>
 
                             <div class="five wide column">
-                                <a href="#"    target="_blank"  th:href="@{'/movice/details?id='+${movice.id}}">
-                                    <img src="../static/images/phone1.jpg"  alt="" th:if="${movice.picture!=null}" th:src="'/img-proxy?url=' + ${movice.picture}" style="width: 180px; height: 110px"
+                                <a href="#"    target="_blank"  th:href="@{'/movie/details?id='+${movie.id}}">
+                                    <img src="../static/images/phone1.jpg"  alt="" th:if="${movie.picture!=null}" th:src="'/img-proxy?url=' + ${movie.picture}" style="width: 180px; height: 110px"
                                          class="ui rounded image">
                                 </a>
                             </div>
@@ -135,7 +135,7 @@
                                 <h3 class="ui header">你真的理解什么是财富自由吗？
 <!--                                <button style="float: right" class="ui mini red basic button" onclick="loaddata()"> <i class="heart outline icon"></i>收藏-->
 <!--                                    </button>-->
-                                    <a href="/movice/favorite"   th:if="${favorite == null && session.user!=null}" >
+                                    <a href="/movie/favorite"   th:if="${favorite == null && session.user!=null}" >
                                         <button style="float: right" class="ui mini red basic button" > <i class="heart outline icon"></i>点击收藏
                                         </button>
                                     </a>
@@ -239,14 +239,14 @@
                                 <i class="idea icon"></i>收藏夹
                             </div>
                             <div class="right aligned column">
-                                <a href="#" th:href="@{/movice/history}" target="_blank">more <i
+                                <a href="#" th:href="@{/movie/history}" target="_blank">more <i
                                         class="angle double right icon"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="ui teal segment">
                         <div class="ui fluid vertical menu" th:each="userFavorite:${userFavorites}">
-                            <a href="#" th:href="@{'/movice/details?id='+${userFavorite.id}}" class="item">
+                            <a href="#" th:href="@{'/movie/details?id='+${userFavorite.id}}" class="item">
                                 <span th:text="${userFavorite.title}">学习日志</span>
                                 <div class="ui teal basic left pointing label" th:text="${userFavorite.averageRating} + '分'">13</div>
                             </a>
@@ -291,10 +291,10 @@
                         </div>
                     </div>
                     <div class="ui teal segment" >
-                        <a href="#" th:href="@{'/type/showAll?genreId='+${type.genreId}}"
+                        <a href="#" th:href="@{'/type/showAll?categoryId='+${type.categoryId}}"
                            target="_blank" th:each="type:${types}"
                            class="ui teal basic left pointing label m-margin-tb-tiny">
-                            <span th:text="${type.genreName}" >方法论</span>
+                            <span th:text="${type.categoryName}" >方法论</span>
                             <div class="detail" th:text="${type.movieCount}">23</div>
                         </a>
                         <!--/*-->
@@ -344,13 +344,13 @@
                         <i class="bookmark icon"></i>热门推荐
                     </div>
 
-                    <div class="ui segment" th:each="movice, iterStat : ${HotpageInfo.list}">
-                        <a href="/" target="_blank" th:href="@{'/movice/details?id='+${movice.id}}" class="m-black m-text-thin">
+                    <div class="ui segment" th:each="movie, iterStat : ${HotpageInfo.list}">
+                        <a href="/" target="_blank" th:href="@{'/movie/details?id='+${movie.id}}" class="m-black m-text-thin">
                             <div class="movie-title" style="display: flex; align-items: center; font-size: 18px; font-family: 华文行楷">
                                 <div th:with="index=${iterStat.index + 1}" th:text="${index} + '. '">1. </div>
-                                <div th:text="${#strings.length(movice.title) > 12 ? #strings.substring(movice.title, 0, 8) + '...' : movice.title}" style="margin-right: 5px;">海王</div>
+                                <div th:text="${#strings.length(movie.title) > 12 ? #strings.substring(movie.title, 0, 8) + '...' : movie.title}" style="margin-right: 5px;">海王</div>
                                 <div><i class="fire icon" style="color: red;"></i></div>
-                                <div th:text="${movice.sum}" style="color: red;"> 800</div>
+                                <div th:text="${movie.sum}" style="color: red;"> 800</div>
                             </div>
                         </a>
                     </div>
@@ -450,7 +450,7 @@
     //提交表单
     function loaddata() {
         //局部刷新的必须的元素id必须调用load
-        $("#blogList").load(/*[[@{/movice/showAll/search}]]*/"/movice/showAll/search",
+        $("#blogList").load(/*[[@{/movie/showAll/search}]]*/"/movie/showAll/search",
             {pageNum: pageNum});
 
     }

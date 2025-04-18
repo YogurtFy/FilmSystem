@@ -32,25 +32,25 @@
 
     <!--  用户给电影打标签    -->
     <insert id="UserAddMovieTag">
-        insert into movie_tags (movice_id,tag_id, user_id)
-        values (#{moviceId}, #{tagId},#{userId})
+        insert into movie_tags (movie_id,tag_id, user_id)
+        values (#{movieId}, #{tagId},#{userId})
     </insert>
 
     <select id="selectUserMovieTagLive" resultType="com.cqu.filmsystem.pojo.MovieTag"  >
-        select  * from  movie_tags where movice_id = #{moviceId} and tag_id=#{tagId} and user_id=#{userId}
+        select  * from  movie_tags where movie_id = #{movieId} and tag_id=#{tagId} and user_id=#{userId}
     </select>
 
     <select id="selectTagByUserId" resultType="com.cqu.filmsystem.pojo.Tag"  parameterType="Integer" >
         SELECT t.id, t.name
         FROM t_tag t
                  JOIN movie_tags mt ON t.id = mt.tag_id
-        WHERE mt.user_id = #{userId} AND mt.movice_id = #{moviceId};
+        WHERE mt.user_id = #{userId} AND mt.movie_id = #{movieId};
 
     </select>
 
     <delete id="deleteByThreeID">
         delete from movie_tags
-        where movice_id = #{moviceId} and tag_id=#{tagId} and user_id=#{userId}
+        where movie_id = #{movieId} and tag_id=#{tagId} and user_id=#{userId}
     </delete>
 
 

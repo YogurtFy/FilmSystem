@@ -1,8 +1,5 @@
 package com.cqu.filmsystem.pojo;
 
-import com.cqu.filmsystem.test.Movie;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,9 +11,9 @@ public class UserRecommend {
 
     private String username;
 
-    private Movice movice;
+    private Movie movie;
 
-    private List<Movice> moviceList;
+    private List<Movie> movieList;
 
     public UserRecommend(String username) {
         this.username=username;
@@ -42,20 +39,20 @@ public class UserRecommend {
         this.id = id;
     }
 
-    public List<Movice> getMoviceList() {
-        return moviceList;
+    public List<Movie> getMovieList() {
+        return movieList;
     }
 
-    public void setMoviceList(List<Movice> moviceList) {
-        this.moviceList = moviceList;
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList = movieList;
     }
 
-    public Movice getMovice() {
-        return movice;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovice(Movice movice) {
-        this.movice = movice;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
 
@@ -64,13 +61,13 @@ public class UserRecommend {
         return "UserRecommend{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", movice=" + movice +
-                ", moviceList=" + moviceList +
+                ", movie=" + movie +
+                ", movieList=" + movieList +
                 '}';
     }
 
-    public Movice find(String movieName) {
-        for (Movice movie : moviceList) {
+    public Movie find(String movieName) {
+        for (Movie movie : movieList) {
             // 使用 Objects.equals() 可以安全地避免 NullPointerException
             if (Objects.equals(movie.getTitle(), movieName)) {
                 return movie;

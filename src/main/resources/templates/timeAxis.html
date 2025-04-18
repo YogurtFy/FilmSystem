@@ -57,10 +57,10 @@
                     <time th:text="${#dates.format(syslog.createDate, 'yyyy-MM-dd HH:mm:ss')}" style="width: 200px">2020-06-15 16:25:62</time>
 
                     <div style="display: flex; align-items: center;" class="scientist">
-<!--                        <img th:src="${syslog.movice.picture}" src="https://pyy-filmsystem.oss-cn-chengdu.aliyuncs.com/video/%E4%BA%A4%E6%8D%A2%E4%BA%BA%E7%94%9F.webp" alt="Avatar" style="width: 80px; height: 100px;  border-radius: 50%;  margin-right: 10px;">-->
-                        <a th:href="@{'/movice/details?id='+${syslog.movice.id}}">
+<!--                        <img th:src="${syslog.movie.picture}" src="https://pyy-filmsystem.oss-cn-chengdu.aliyuncs.com/video/%E4%BA%A4%E6%8D%A2%E4%BA%BA%E7%94%9F.webp" alt="Avatar" style="width: 80px; height: 100px;  border-radius: 50%;  margin-right: 10px;">-->
+                        <a th:href="@{'/movie/details?id='+${syslog.movie.id}}">
                             <h3 class="state" style="text-align:center;font-size: 16px;color: #000;"
-                            th:text="${syslog.movice.title}">【SpringBoot搭建个人博客】- 相册管理（九）</h3>
+                            th:text="${syslog.movie.title}">【SpringBoot搭建个人博客】- 相册管理（九）</h3>
                         </a>
                     </div>
                 </div>

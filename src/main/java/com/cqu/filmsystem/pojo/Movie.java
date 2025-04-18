@@ -1,15 +1,13 @@
 package com.cqu.filmsystem.pojo;
-import com.cqu.filmsystem.test.Movie;
 
 import java.util.Date;
-import java.util.List;
 
 
-public class Movice  implements Comparable<Movice>{
+public class Movie implements Comparable<Movie>{
     private  int id;
     private String title;
     private String director;
-    private String genre;
+    private String category;
     private Date releaseDate;
     private int runtime;
     private String language;
@@ -20,7 +18,7 @@ public class Movice  implements Comparable<Movice>{
     private int regionId;
     private int pageView;
     private int commentTime;
-    private int favritesTime;
+    private int favoritesTime;
     private int sum;
 
 
@@ -44,12 +42,12 @@ public class Movice  implements Comparable<Movice>{
         this.commentTime = commentTime;
     }
 
-    public int getFavritesTime() {
-        return favritesTime;
+    public int getFavoritesTime() {
+        return favoritesTime;
     }
 
-    public void setFavritesTime(int favritesTime) {
-        this.favritesTime = favritesTime;
+    public void setFavoritesTime(int favoritesTime) {
+        this.favoritesTime = favoritesTime;
     }
 
     public int getId() {
@@ -76,12 +74,12 @@ public class Movice  implements Comparable<Movice>{
         this.director = director;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getCategory() {
+        return category;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Date getReleaseDate() {
@@ -174,11 +172,11 @@ public class Movice  implements Comparable<Movice>{
 
     @Override
     public String toString() {
-        return "Movice{" +
+        return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", director='" + director + '\'' +
-                ", genre='" + genre + '\'' +
+                ", category='" + category + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", runtime=" + runtime +
                 ", language='" + language + '\'' +
@@ -189,7 +187,7 @@ public class Movice  implements Comparable<Movice>{
                 ", regionId=" + regionId +
                 ", pageView=" + pageView +
                 ", commentTime=" + commentTime +
-                ", favritesTime=" + favritesTime +
+                ", favoritesTime=" + favoritesTime +
                 ", sum=" + sum +
                 ", rating=" + rating +
                 ", ViewTime=" + ViewTime +
@@ -197,7 +195,7 @@ public class Movice  implements Comparable<Movice>{
     }
 
     @Override
-    public int compareTo(Movice o) {
+    public int compareTo(Movie o) {
         return rating > o.rating ? -1 : 1;
     }
 

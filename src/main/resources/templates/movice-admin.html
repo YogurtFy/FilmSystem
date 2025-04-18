@@ -113,19 +113,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="movice:${pageInfo.list}">
-                <td th:text="${movice.id}">1</td>
-                <td th:text="${movice.title}">刻意练习清单</td>
-                <td th:text="${movice.director}">认知升级</td>
-                <td th:text="${#dates.format(movice.releaseDate,'yyyy-MM-dd HH:mm')}" >是</td>
-                <td th:text="${movice.runtime}">是</td>
-                <td th:text="${movice.language}">2017-10-02 09:45</td>
-                <td th:text="${movice.averageRating}">2017-10-02 09:45</td>
-                <td th:text="${movice.pageView}">2017-10-02 09:45</td>
+            <tr th:each="movie:${pageInfo.list}">
+                <td th:text="${movie.id}">1</td>
+                <td th:text="${movie.title}">刻意练习清单</td>
+                <td th:text="${movie.director}">认知升级</td>
+                <td th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd HH:mm')}" >是</td>
+                <td th:text="${movie.runtime}">是</td>
+                <td th:text="${movie.language}">2017-10-02 09:45</td>
+                <td th:text="${movie.averageRating}">2017-10-02 09:45</td>
+                <td th:text="${movie.pageView}">2017-10-02 09:45</td>
                 <td>
-                    <a href="#" th:href="@{'/admin/movice/toUpdate?id='+${movice.id}}"
+                    <a href="#" th:href="@{'/admin/movie/toUpdate?id='+${movie.id}}"
                        class="ui mini teal basic button">编辑</a>
-                    <a href="#" th:href="@{'/admin/movice/deleteById?id='+${movice.id}}" onclick="return confirmDel()"
+                    <a href="#" th:href="@{'/admin/movie/deleteById?id='+${movie.id}}" onclick="return confirmDel()"
                        class="ui mini red basic button">删除</a>
                 </td>
             </tr>
@@ -142,7 +142,7 @@
                         <a onclick="page(this)" class=" item"
                            th:attr="pageNum = ${pageInfo.pageNum + 1 > pageInfo.pages ? pageInfo.pages : pageInfo.pageNum + 1}">下一页</a>
                     </div>
-                    <a href="#" th:href="@{/admin/movice/toAdd}" class="ui mini right floated teal basic button">新增</a>
+                    <a href="#" th:href="@{/admin/movie/toAdd}" class="ui mini right floated teal basic button">新增</a>
                 </th>
             </tr>
             </tfoot>
@@ -236,7 +236,7 @@
         var director = $("#director").val();
         // var recommend = $("#recommend").prop("checked");
         //局部刷新的必须的元素id必须调用load
-        $("#blogList").load(/*[[@{/admin/movice/showAll/search}]]*/"/admin/movice/showAll/search",
+        $("#blogList").load(/*[[@{/admin/movie/showAll/search}]]*/"/admin/movie/showAll/search",
             {pageNum: pageNum, title: title, director: director})
     }
 

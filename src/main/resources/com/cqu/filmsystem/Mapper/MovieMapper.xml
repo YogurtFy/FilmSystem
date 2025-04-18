@@ -3,13 +3,13 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cqu.filmsystem.Mapper.MoviceMapper">
+<mapper namespace="com.cqu.filmsystem.Mapper.MovieMapper">
 
-    <resultMap id="MoviceResultMap" type="Movice">
+    <resultMap id="MovieResultMap" type="Movie">
         <id property="id" column="id" />
         <result property="title" column="title"/>
         <result property="director" column="director"/>
-        <result property="genre" column="genre"/>
+        <result property="category" column="category"/>
         <result property="releaseDate" column="release_date"/>
         <result property="runtime" column="runtime"/>
         <result property="language" column="language"/>
@@ -20,24 +20,24 @@
         <result property="regionId" column="region_id"/>
         <result property="pageView" column="page_view"/>
         <result property="commentTime" column="comment_time"/>
-        <result property="favritesTime" column="favrites_time"/>
+        <result property="favoritesTime" column="favorites_time"/>
         <result property="ViewTime" column="View_Time"/>
     </resultMap>
 
-    <select id="select" resultMap="MoviceResultMap">
+    <select id="select" resultMap="MovieResultMap">
         select *  from movies
         ORDER BY release_date DESC
     </select>
 
-    <select id="selectByCondition" resultMap="MoviceResultMap">
+    <select id="selectByCondition" resultMap="MovieResultMap">
         SELECT * FROM movies
         WHERE release_date BETWEEN #{startDate} AND #{endDate}
         <if test="regionId != 0">
             AND region_id = #{regionId}
         </if>
-        <if test="genreId != 0">
+        <if test="categoryId != 0">
             AND id IN (
-            SELECT movice_id FROM movie_genres WHERE genres_id = #{genreId}
+            SELECT movie_id FROM movie_category WHERE category_id = #{categoryId}
             )
         </if>
         AND title LIKE #{searchContent}
@@ -50,21 +50,21 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByid"  resultMap="MoviceResultMap"  parameterType="Integer">
+    <select id="selectByid"  resultMap="MovieResultMap"  parameterType="Integer">
         SELECT *
         FROM movies
         WHERE  id=#{id}
     </select>
 
 
-    <select id="selectByTagId"  resultMap="MoviceResultMap"  parameterType="Integer">
+    <select id="selectByTagId"  resultMap="MovieResultMap"  parameterType="Integer">
         SELECT m.*
-        FROM movies m JOIN movie_tags mt ON m.id = mt.movice_id
+        FROM movies m JOIN movie_tags mt ON m.id = mt.movie_id
         WHERE mt.tag_id = #{tagId}
     </select>
 
 
-    <select id="selectFavorite"  parameterType="Integer" resultType="Movice">
+    <select id="selectFavorite"  parameterType="Integer" resultType="Movie">
         SELECT m.*
         FROM movies m
                  JOIN user_favorites uf ON m.id = uf.movie_id
@@ -80,7 +80,7 @@
         DELETE FROM user_favorites WHERE user_id = #{userId} AND movie_id = #{movieId};
     </delete>
 
-    <select id="selectFavorites"  parameterType="Integer" resultType="Movice">
+    <select id="selectFavorites"  parameterType="Integer" resultType="Movie">
         SELECT m.*
         FROM movies m
                  JOIN user_favorites uf ON m.id = uf.movie_id
@@ -88,12 +88,12 @@
     </select>
 
                     <!--                                 管理员                                 -->
-  <select id="selectDirector"  resultType="Movice">
-      SELECT  DISTINCT  director FROM movies;
+  <select id="selectDirector"  resultType="Movie">
+      SELECT DISTINCT director FROM movies;
   </select>
 
 
-    <select id="selectAll" resultMap="MoviceResultMap">
+    <select id="selectAll" resultMap="MovieResultMap">
         select *
         from movies
         <where>
@@ -120,16 +120,12 @@
 
 
     <!--  基于内容的协同过滤  -->
-    <select id="getAllMovies" resultType="Movice">
+    <select id="getAllMovies" resultType="Movie">
         SELECT * FROM movies
     </select>
 
     <select id="getMovieRatings" resultType="Rating">
         SELECT * FROM movie_ratings
     </select>
-
-
-
-
 
 </mapper>

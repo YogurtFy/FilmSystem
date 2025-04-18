@@ -7,13 +7,13 @@
 
     <resultMap id="ActorResultMap" type="Actor">
         <id property="actorId" column="actor_id" />
-        <result property="name" column="name"/>
-        <result property="picture" column="picture"/>
+        <result property="name" column="actor_name"/>
+        <result property="picture" column="actor_picture"/>
     </resultMap>
 
 
-    <select id="selectByMoviceId" resultMap="ActorResultMap" parameterType="int">
-        SELECT a.actor_id, a.name,  a.picture
+    <select id="selectByMovieId" resultMap="ActorResultMap" parameterType="int">
+        SELECT a.actor_id, a.actor_name,  a.actor_picture
         FROM actors a
                  INNER JOIN movie_actors ma ON a.actor_id = ma.actor_id
         WHERE ma.movie_id = #{id};

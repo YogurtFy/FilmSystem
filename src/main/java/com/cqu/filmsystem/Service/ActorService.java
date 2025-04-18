@@ -12,7 +12,7 @@ public interface ActorService {
 
 
 
-    List<Actor>  selectByMoviceId(int id) throws  IOException;
+    List<Actor>  selectByMovieId(int id) throws  IOException;
 
 
     //-----------------------------------------------管理员------------------------------------------------------------------

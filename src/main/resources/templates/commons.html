@@ -284,7 +284,7 @@
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item" style="font-family: 'YaHei Consolas Hybrid';margin-left: 150px">
                 电影推荐</h2>
-            <a href="#"  th:href="@{/movice/showAll}" class="m-item item m-mobile-hide"
+            <a href="#"  th:href="@{/movie/showAll}" class="m-item item m-mobile-hide"
                th:classappend="${n == 1} ? 'active'"><i
                     class="mini home icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">首页</span></a>
             <a href="#" th:href="@{/type/showAll}" class="m-item item m-mobile-hide"
@@ -293,10 +293,10 @@
             <a href="#" th:href="@{/tag/showAll}" class="m-item item m-mobile-hide"
                th:classappend="${n == 5} ? 'active'"><i
                     class="mini idea icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">标签</span></a>
-            <a href="#" th:href="@{/movice/selectFavorites}" class="m-item item m-mobile-hide"
+            <a href="#" th:href="@{/movie/selectFavorites}" class="m-item item m-mobile-hide"
                th:classappend="${n == 3} ? 'active'"><i
                     class="mini tags icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">收藏夹</span></a>
-            <a href="#" th:href="@{/movice/history}" class="m-item item m-mobile-hide"
+            <a href="#" th:href="@{/movie/history}" class="m-item item m-mobile-hide"
                th:classappend="${n == 4} ? 'active'"><i
                     class="mini clone icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">观看历史</span></a>
             <a href="javascript:void(0);" class="m-item item m-mobile-hide" id="show-ai-chat"
@@ -340,7 +340,7 @@
                         <a href="/user/exit"  class="item">注销</a>
                         <a href="/user/toupdateName"  class="item">修改昵称</a>
                         <a href="/user/toupdatePassword"  class="item">修改密码</a>
-                        <a href="/admin/movice/" th:if="${session.user.roles[0].name == 'ROLE_ADMIN'}"  class="item">后台首页</a>
+                        <a href="/admin/movie/" th:if="${session.user.roles[0].name == 'ROLE_ADMIN'}"  class="item">后台首页</a>
                         <a href="/user/toupdateImage"  class="item">更换头像</a>
                     </div>
                 </div>
