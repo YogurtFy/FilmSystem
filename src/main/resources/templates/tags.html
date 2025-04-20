@@ -86,8 +86,13 @@
                                                  target="_blank" class="m-black"
                                                  th:text="${movie.title}">你真的理解什么是财富自由吗</a>
                         </h3>
-                        <p class="m-text"   th:inline="text">
-                            [[${#strings.substring(movie.description, 0, 100)}]]...</p>
+                        <p class="m-text" th:inline="text">
+                            [[${#strings.substring(
+                            (movie?.description ?: ''),
+                            0,
+                            (#strings.length(movie?.description ?: '') >= 100) ? 100 : #strings.length(movie?.description ?: '')
+                            )}]]...
+                        </p>
                         <div class="ui grid">
                             <div class="eleven wide column">
                                 <div class="ui mini horizontal link list">
@@ -105,16 +110,16 @@
                                 </div>
                             </div>
                             <div class="right aligned five wide column">
-                                <a href="#" target="_blank"
-                                   class="ui teal basic label m-padded-tiny m-text-thin" >冒险</a>
+<!--                                <a href="#" target="_blank"-->
+<!--                                   class="ui teal basic label m-padded-tiny m-text-thin" >冒险</a>-->
                             </div>
                         </div>
                     </div>
 
                     <div class="five wide column">
                         <a href="#"   th:href="@{'/movie/details?id='+${movie.id}}"  target="_blank">
-                            <img src="../static/images/phone1.jpg"  alt="" th:src="${movie.picture}"
-                                 class="ui rounded image">
+                            <img src="../static/images/phone1.jpg"  alt="" th:src="'/img-proxy?url=' + ${movie.picture}"
+                            class="ui rounded image">
                         </a>
                     </div>
 
