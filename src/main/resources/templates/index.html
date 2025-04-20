@@ -68,7 +68,7 @@
                         </div>
                         <div class="right aligned column">
                             共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${pageInfo.total}">
-                            14 </h2> 篇
+                            </h2> 篇
                         </div>
                     </div>
                 </div>
@@ -110,24 +110,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--类别标签-->
                                     <div class="right aligned five wide column">
-<!--                                        <a href="#" target="_blank"-->
-
-<!--                                           class="ui teal basic label m-padded-tiny m-text-thin"-->
-<!--                                          >认知升级</a>-->
+                                        <div th:each="type : ${movieTypesMap[movie.id]}">
+                                            <a href="#" target="_blank"
+                                               class="ui teal basic label m-padded-tiny m-text-thin"
+                                               th:text="${type.category_name}">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="five wide column">
-                                <a href="#"    target="_blank"  th:href="@{'/movie/details?id='+${movie.id}}">
-                                    <img src="../static/images/phone1.jpg"  alt="" th:if="${movie.picture!=null}" th:src="'/img-proxy?url=' + ${movie.picture}" style="width: 180px; height: 110px"
-                                         class="ui rounded image">
-                                </a>
-                            </div>
+<!--                            <div class="five wide column">-->
+<!--                                <a href="#"    target="_blank"  th:href="@{'/movie/details?id='+${movie.id}}">-->
+<!--                                    <img src="../static/images/phone1.jpg"  alt="" th:if="${movie.picture!=null}" th:src="'/img-proxy?url=' + ${movie.picture}" style="width: 180px; height: 110px"-->
+<!--                                         class="ui rounded image">-->
+<!--                                </a>-->
+<!--                            </div>-->
 
                         </div>
                     </div>
+
                     <!--/*-->
                     <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
                         <div class="ui mobile reversed stackable grid">
@@ -170,8 +174,8 @@
                                         </div>
                                     </div>
                                     <div class="right aligned five wide column">
-<!--                                        <a href="#" target="_blank"-->
-<!--                                           class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>-->
+                                        <a href="#" target="_blank"
+                                           class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
                                     </div>
                                 </div>
                             </div>
@@ -189,23 +193,6 @@
 
                 </div>
 
-                <!--footer-->
-<!--                <div class="ui bottom attached segment" >-->
-<!--                    <div class="ui middle aligned two column grid">-->
-<!--                        <div class="column">-->
-<!--                            <a href="#" onclick="page(this)"-->
-<!--                               th:attr="pageNum=${pageInfo.pageNum - 1 <= 0 ? 1 : pageInfo.pageNum - 1}"-->
-<!--                               class="ui mini teal basic button">上一页</a>-->
-<!--                        </div>-->
-<!--                        -->
-
-<!--                        <div class="right aligned column">-->
-<!--                            <a href="#" onclick="page(this)"-->
-<!--                               th:attr="pageNum=${pageInfo.pageNum + 1 > pageInfo.pages ?  pageInfo.pages:pageInfo.pageNum + 1}"-->
-<!--                               class="ui mini teal basic button">下一页</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="ui bottom attached segment" th:if="${pageInfo.pages > 1}">
                     <div class="ui middle aligned three column grid">
                         <div class="column">
@@ -247,32 +234,10 @@
                     <div class="ui teal segment">
                         <div class="ui fluid vertical menu" th:each="userFavorite:${userFavorites}">
                             <a href="#" th:href="@{'/movie/details?id='+${userFavorite.id}}" class="item">
-                                <span th:text="${userFavorite.title}">学习日志</span>
+                                <span th:text="${userFavorite.title}">收藏</span>
                                 <div class="ui teal basic left pointing label" th:text="${userFavorite.averageRating} + '分'">13</div>
                             </a>
 
-                            <!--/*-->
-                            <a href="#" class="item">
-                                思考与感悟
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <!--*/-->
                         </div>
                     </div>
                 </div>
@@ -382,6 +347,12 @@
                     <!--*/-->
                 </div>
 
+                <!--二维码-->
+                <h4 class="ui horizontal divider header m-margin-top-large">扫码关注我</h4>
+                <div class="ui centered card" style="width: 11em">
+                    <img src="../static/images/wechat.jpg" th:src="@{/static/images/wechat.jpg}" alt=""
+                         class="ui rounded image">
+                </div>
             </div>
         </div>
     </div>

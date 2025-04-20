@@ -94,16 +94,6 @@
                 <div class="ui basic teal top pointing label" th:if="${types != null}" th:each="type:${types}" th:text="${type.categoryName}">科幻</div>
             </div>
 
-<!--            <div class="m-padded-lr-responsive" th:if="${tag != null}">-->
-<!--                <div class="ui basic teal top pointing label">类型：</div>-->
-<!--                <div class="ui basic teal top pointing label"  th:text="${tag.name}">科幻-->
-<!--                </div>-->
-<!--                <div class="ui basic teal top pointing label"  th:text="${tag.name}">冒险-->
-<!--                </div>-->
-<!--            </div>-->
-
-
-
             <div class="ui container">
                 <div class="ui grid">
 
@@ -161,9 +151,8 @@
 
             </div>
 
-
+            <!--actors information-->
             <div style="padding: 0 50px; display: flex; flex-wrap: wrap; justify-content: start; align-items: center; gap: 10px;">
-
                 <div th:each="actor : ${actors}">
                     <div class="image">
                         <img th:src="'/img-proxy?url=' + ${actor.picture}" class="ui circular image" style="width: 80px; height: 80px;">
@@ -172,13 +161,8 @@
                         <div class="header" th:text="${actor.name}" style="font-size: 12px; padding: 5px; text-align: center;"></div>
                     </div>
                 </div>
-
-
-
-
-                <!-- 更多演员的卡片... -->
-
             </div>
+
         </div>
 
 
