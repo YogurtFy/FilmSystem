@@ -29,7 +29,9 @@ public class ImageProxyController {
             "i1.hdslb.com",
             "img.youtube.com",
             "m.media-amazon.com",
-            "pyy-filmsystem.oss-cn-chengdu.aliyuncs.com"
+            "pyy-filmsystem.oss-cn-chengdu.aliyuncs.com",
+            "https://i.pravatar.cc",
+            "http://filmsystem.oss-cn-beijing.aliyuncs.com"
     );
 
     @GetMapping("/img-proxy")

@@ -275,9 +275,8 @@
         }).observe(document, {subtree: true, childList: true});
     </script>
 </head>
+
 <body>
-
-
 <!--导航-->
 <div th:fragment="menu(n)">
     <nav class="gird-header">
@@ -302,6 +301,10 @@
             <a href="javascript:void(0);" class="m-item item m-mobile-hide" id="show-ai-chat"
                th:if="${session.user != null}"><i
                     class="mini comment alternate icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">AI对话</span></a>
+            <a href="#" th:href="@{/living/room}" class="m-item item m-mobile-hide"
+               th:classappend="${n == 6} ? 'active'">
+                <i class="mini film icon"></i>&nbsp;
+                <span style="font-size: 22px; font-family: 华文行楷">放映室</span></a>
 <!--            <a href="#" th:href="@{/font/time/timeAxis}" class="m-item item m-mobile-hide"-->
 <!--               th:classappend="${n == 5} ? 'active'"><i-->
 <!--                    class="mini clock outline icon"></i>&nbsp;<span-->
