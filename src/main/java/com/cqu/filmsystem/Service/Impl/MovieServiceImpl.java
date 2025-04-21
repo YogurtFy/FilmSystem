@@ -1,6 +1,8 @@
 package com.cqu.filmsystem.Service.Impl;
 
+import com.cqu.filmsystem.Mapper.TypeMapper;
 import com.cqu.filmsystem.pojo.Movie;
+import com.cqu.filmsystem.pojo.Type;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.cqu.filmsystem.Mapper.MovieMapper;
@@ -20,6 +22,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     MovieMapper movieMapper;
+
+    @Autowired
+    TypeMapper typeMapper;
 
     @Autowired
      RatingMapper ratingMapper;
@@ -129,7 +134,15 @@ public class MovieServiceImpl implements MovieService {
 
         PageHelper.startPage (pageNum, pageSize);
         List<Movie> select = movieMapper.select();
-        PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
+
+        // 对每部电影，查询它的类别，并设置进 movie 对象中
+        for (Movie movie : select) {
+
+            List<Type> typeList = typeMapper.selectByMovieId(movie.getId());
+            movie.setTypeList(typeList);
+        }
+
+        PageInfo<Movie> pageInfo = new PageInfo<>(select, 5);
         return pageInfo;
     }
 

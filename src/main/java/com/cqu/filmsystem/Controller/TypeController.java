@@ -102,6 +102,12 @@ public class TypeController {
             //根据条件查询电影信息
             PageInfo = movieService.selectByCondition(pageNum,pageSize, categoryId,regionId,dates[0],dates[1],searchContent);
         }
+        Map<Integer, List<Type>> movieTypesMap = new HashMap<>();
+        for (Movie movie : PageInfo.getList()) {
+            List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
+            movieTypesMap.put(movie.getId(), typeList);
+        }
+        model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
         model.addAttribute("pageInfo",PageInfo);
         model.addAttribute("types",types);
         model.addAttribute("regions",regions);
@@ -142,11 +148,5 @@ public class TypeController {
 
 
     }
-
-
-
-
-
-
 
 }

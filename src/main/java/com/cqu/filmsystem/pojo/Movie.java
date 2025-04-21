@@ -1,6 +1,7 @@
 package com.cqu.filmsystem.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class Movie implements Comparable<Movie>{
@@ -20,6 +21,8 @@ public class Movie implements Comparable<Movie>{
     private int commentTime;
     private int favoritesTime;
     private int sum;
+    private List<Type> typeList;
+
 
 
     public int getSum() {
@@ -168,6 +171,14 @@ public class Movie implements Comparable<Movie>{
 
     public void setRegionId(int regionId) {
         this.regionId = regionId;
+    }
+
+    public List<Type> getTypeList() {
+        return typeList;
+    }
+
+    public void setTypeList(List<Type> typeList) {
+        this.typeList = typeList;
     }
 
     @Override

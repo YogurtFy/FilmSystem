@@ -46,8 +46,6 @@
 
                 </div>
 
-
-
                 <div class="field">
                     <div class="ui labeled action input">
                         <div class="ui type selection dropdown">
@@ -96,7 +94,7 @@
 
                 </div>
                 <div class="field">
-                    <button class="ui mini teal basic button" onclick="loaddata()"><i class="search icon"></i>搜索
+                    <button class="ui mini teal basic button" onclick="loaddata1()"><i class="search icon"></i>搜索
                     </button>
                 </div>
 
@@ -143,9 +141,13 @@
                                     浏览次数：[[${movie.pageView}]]
                                 </p>
                                 <div class="ui labels" style="gap: 4px; margin: 0; margin-bottom: 10px;">
-<!--                                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" style="padding: 4px 8px; font-size: 0.9em;">冒险</a>-->
-<!--                                    <a href="#" target="_blank" class="ui orange basic label m-padded-tiny m-text-thin" style="padding: 4px 8px; font-size: 0.9em;">剧情</a>-->
-<!--                                    <a href="#" target="_blank" class="ui violet basic label m-padded-tiny m-text-thin" style="padding: 4px 8px; font-size: 0.9em;">奇幻</a>-->
+                                    <a th:each="type : ${movieTypesMap[movie.id]}"
+                                       href="#"
+                                       target="_blank"
+                                       class="ui teal basic label m-padded-tiny m-text-thin"
+                                       style="padding: 4px 8px; font-size: 0.9em;"
+                                       th:text="${type.categoryName}">
+                                    </a>
                                 </div>
                                 <div class="ui mini horizontal link list" style="margin-top: 1em;">
                                     <div class="item">
@@ -317,17 +319,8 @@
         document.getElementById('searchContent').value = '';
         //局部刷新的必须的元素id必须调用load
         $("#blogList").load(/*[[@{/type/showAll/search}]]*/"/type/showAll/search",
-            {pageNum: pageNum, categoryId: genreId, year: year, regionId: regionId});
+            {pageNum: pageNum, categoryId: categoryId, year: year, regionId: regionId});
     }
-
-
-
-
-
-
-
-
-
 
 </script>
 <script src="../static/layui/layui.js" th:src="@{/layui/layui.js}"></script>

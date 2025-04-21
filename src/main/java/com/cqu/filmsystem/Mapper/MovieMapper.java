@@ -65,9 +65,4 @@ public interface MovieMapper {
     List<Movie> getAllMovies();
     List<Rating> getMovieRatings();
 
-
-
-
-
-
 }

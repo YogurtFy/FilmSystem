@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -160,6 +158,13 @@ public class MovieController {
                 moviePageInfo1 = moviePageInfo;
                 moviePageInfo1.setTotal(5);
             }
+            // 5. 为每部电影绑定其标签列表（关键代码）
+            Map<Integer, List<Type>> movieTypesMap = new HashMap<>();
+            for (Movie movie : moviePageInfo1.getList()) {
+                List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
+                movieTypesMap.put(movie.getId(), typeList);
+            }
+            model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
             model.addAttribute("pageInfo", moviePageInfo1);
         }catch (Exception e){
             e.printStackTrace();
