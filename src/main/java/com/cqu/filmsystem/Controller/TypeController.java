@@ -148,8 +148,8 @@ public class TypeController {
             List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
             movieTypesMap.put(movie.getId(), typeList);
         }
-        model.addAttribute("pageInfo",PageInfo);
         model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
+        model.addAttribute("pageInfo",PageInfo);
         return "types:: blogList";
 
     }

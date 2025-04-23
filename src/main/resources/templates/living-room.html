@@ -139,24 +139,27 @@
        position: fixed;
        top: 50%;
        transform: translateY(-50%);
-       width: 120px;
+       width: 240px;         /* 原来 120px × 3 */
+       height: 360px;        /* 原来 180px × 3 */
        opacity: 0.6;
        z-index: -1;
+       overflow: hidden;
+     }
+
+     .decor-left {
+       left: 50px;
+     }
+
+     .decor-right {
+       right: 50px;
      }
 
      .decor-left img, .decor-right img {
        width: 100%;
+       height: 100%;
+       object-fit: cover;
      }
-     /* 原样式基础上仅修改装饰图定位和宽度 */
-     .decor-left, .decor-right {
-       width: 120px; /* 统一宽度 */
-     }
-     .decor-left {
-       left: 50px; /* 左侧距离 */
-     }
-     .decor-right {
-       right: 50px; /* 右侧距离，与左侧对称 */
-     }
+
      @media (max-width: 1000px) {
        .decor-left, .decor-right {
          display: none;

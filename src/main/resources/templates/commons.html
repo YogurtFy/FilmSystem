@@ -305,15 +305,6 @@
                th:classappend="${n == 6} ? 'active'">
                 <i class="mini film icon"></i>&nbsp;
                 <span style="font-size: 22px; font-family: 华文行楷">放映室</span></a>
-<!--            <a href="#" th:href="@{/font/time/timeAxis}" class="m-item item m-mobile-hide"-->
-<!--               th:classappend="${n == 5} ? 'active'"><i-->
-<!--                    class="mini clock outline icon"></i>&nbsp;<span-->
-<!--                    style="font-size: 22px;font-family: 华文行楷">时间轴</span></a>-->
-            <!--<a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n == 6} ? 'active'"><i-->
-            <!--class="mini share square icon"></i>&nbsp;<span style="font-size: 22px;font-family: 华文行楷">我的收藏</span></a>-->
-<!--            <a href="#" th:href="@{/font/about/about}" class="m-item item m-mobile-hide"-->
-<!--               th:classappend="${n == 9} ? 'active'"><i-->
-<!--                    class="mini info icon"></i><span style="font-size: 22px;font-family: 华文行楷">关于本站</span></a>-->
 
             <div class="right m-item item m-mobile-hide">
                 <form name="search" action="#" th:action="@{/type/showAll}" target="_blank" >
@@ -336,7 +327,7 @@
                     <div class="text" >
                         <span style="display: none" id="headPortrait" th:text="${session.user.headPortrait}" >https://picsum.photos/id/319/35/35</span>
                         <img class="ui avatar image" id="img"/>
-                        <span  th:text="${session.user.nickname}" >一友</span>
+                        <span  th:text="${session.user.nickname}">用户名</span>
                     </div>
                     <i class="dropdown icon"></i>
                     <div class="menu">

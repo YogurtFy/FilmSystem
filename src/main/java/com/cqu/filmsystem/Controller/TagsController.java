@@ -1,6 +1,9 @@
 package com.cqu.filmsystem.Controller;
 
+import com.cqu.filmsystem.Mapper.TypeMapper;
+import com.cqu.filmsystem.Service.Impl.TypeServiceImpl;
 import com.cqu.filmsystem.pojo.Movie;
+import com.cqu.filmsystem.pojo.Type;
 import com.github.pagehelper.PageInfo;
 
 import com.cqu.filmsystem.Service.Impl.MovieServiceImpl;
@@ -16,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 @Controller
@@ -29,7 +33,9 @@ public class TagsController {
     @Qualifier("movieServiceImpl")
     MovieService movieService = new MovieServiceImpl();
 
-
+    @Autowired
+    @Qualifier("typeServiceImpl")
+    TypeServiceImpl typeService = new TypeServiceImpl();
 
     @Autowired
     @Qualifier("tagServiceImpl")
@@ -57,6 +63,13 @@ public class TagsController {
         }
 
         model.addAttribute("pageInfo",PageInfo);
+
+        Map<Integer, List<Type>> movieTypesMap = new HashMap<>();
+        for (Movie movie : PageInfo.getList()) {
+            List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
+            movieTypesMap.put(movie.getId(), typeList);
+        }
+        model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
 
         //查询标签：
         List<Tag> tags = tagService.selectAllTagsWithCount();
@@ -88,12 +101,16 @@ public class TagsController {
             // 根据tagId查询  首页
             PageInfo = movieService.selectByTagId(pageNum,pageSize,tagId);
         }
+        Map<Integer, List<Type>> movieTypesMap = new HashMap<>();
+        for (Movie movie : PageInfo.getList()) {
+            List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
+            movieTypesMap.put(movie.getId(), typeList);
+        }
+        model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
+
         model.addAttribute("pageInfo",PageInfo);
         model.addAttribute("tagId",tagId);
         return "tags:: blogList";
     }
-
-
-
 
 }

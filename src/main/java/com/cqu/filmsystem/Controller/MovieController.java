@@ -139,8 +139,6 @@ public class MovieController {
                          @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize ,
                          Model model , HttpServletRequest request) throws IOException {
 
-        PageInfo<Movie> select = movieService.select(pageNum,pageSize);
-        model.addAttribute("pageInfo",select);
 
         //---------------------------------------------0.热门推荐-----------------------------------------
         PageInfo<Movie> moviePageInfo = recommendService.popularRecommendations(pageNum, pageSize);
@@ -220,6 +218,12 @@ public class MovieController {
             {
                 moviePageInfo1 = moviePageInfo;
             }
+            Map<Integer, List<Type>> movieTypesMap = new HashMap<>();
+            for (Movie movie : moviePageInfo1.getList()) {
+                List<Type> typeList = typeService.selectByMovieId(movie.getId()); // 查询该电影的所有分类
+                movieTypesMap.put(movie.getId(), typeList);
+            }
+            model.addAttribute("movieTypesMap", movieTypesMap); // 前端用这个展示标签
             model.addAttribute("pageInfo", moviePageInfo1);
         }catch (Exception e){
             e.printStackTrace();
