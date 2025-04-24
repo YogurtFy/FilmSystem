@@ -33,7 +33,7 @@
         select * from actors
         <where>
             <if test="title != null">
-                and name like #{title}
+                and actor_name like #{title}
             </if>
         </where>
     </select>

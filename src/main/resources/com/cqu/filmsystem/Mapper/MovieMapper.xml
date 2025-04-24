@@ -118,6 +118,10 @@
         where id=#{id}
     </update>
 
+    <delete id="deleteById">
+        DELETE FROM movies
+        WHERE id = #{id}
+    </delete>
 
     <!--  基于内容的协同过滤  -->
     <select id="getAllMovies" resultType="Movie">

@@ -211,12 +211,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
 
-
-    @Override
-    public int delete(int id) {
-        return 0;
-    }
-
     @Override
     public int update(Movie blog) {
         return movieMapper.update(blog);
@@ -230,5 +224,11 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> select = movieMapper.selectByTagId(tagId);
         PageInfo<Movie> pageInfo = new PageInfo<> (select, 5);
         return pageInfo;
+    }
+
+    @Override
+    public int deleteMovieById(Long id) {
+        int res = movieMapper.deleteById(id);
+        return res;
     }
 }

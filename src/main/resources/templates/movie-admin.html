@@ -80,13 +80,6 @@
 
                 </div>
 
-<!--                <div class="field">-->
-<!--                    <div class="ui checkbox">-->
-<!--                        <input type="checkbox" id="recommend" name="recommend">-->
-<!--                        <label for="recommend">推荐</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <div class="field">
                     <button class="ui mini teal basic button" onclick="loaddata()"><i class="search icon"></i>搜索
                     </button>
@@ -114,19 +107,20 @@
             </thead>
             <tbody>
             <tr th:each="movie:${pageInfo.list}">
-                <td th:text="${movie.id}">1</td>
-                <td th:text="${movie.title}">刻意练习清单</td>
-                <td th:text="${movie.director}">认知升级</td>
-                <td th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd HH:mm')}" >是</td>
-                <td th:text="${movie.runtime}">是</td>
-                <td th:text="${movie.language}">2017-10-02 09:45</td>
-                <td th:text="${movie.averageRating}">2017-10-02 09:45</td>
-                <td th:text="${movie.pageView}">2017-10-02 09:45</td>
+                <td th:text="${movie.id}">序号</td>
+                <td th:text="${movie.title}">标题</td>
+                <td th:text="${movie.director}">导演</td>
+                <td th:text="${#dates.format(movie.releaseDate,'yyyy-MM-dd HH:mm')}" >上映时间</td>
+                <td th:text="${movie.runtime}">运行时间</td>
+                <td th:text="${movie.language}">语言</td>
+                <td th:text="${movie.averageRating}">评分</td>
+                <td th:text="${movie.pageView}">浏览量</td>
                 <td>
                     <a href="#" th:href="@{'/admin/movie/toUpdate?id='+${movie.id}}"
                        class="ui mini teal basic button">编辑</a>
-                    <a href="#" th:href="@{'/admin/movie/deleteById?id='+${movie.id}}" onclick="return confirmDel()"
-                       class="ui mini red basic button">删除</a>
+
+                    <button th:onclick="'deleteMovie(' + ${movie.id} + ')'" class="ui mini red basic button">删除</button>
+
                 </td>
             </tr>
             </tbody>
@@ -204,6 +198,27 @@
             {pageNum: pageNum, title: title, director: director})
     }
 
+    function deleteMovie(id) {
+        console.log("接收到的电影 ID: ", id);
+        if (confirm("确定删除吗？")) {
+            fetch(`/admin/movie/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("删除成功");
+                        location.reload(); // 刷新页面
+                    } else {
+                        alert("删除失败");
+                    }
+                })
+                .catch(error => {
+                    console.error("请求失败", error);
+                    alert("请求失败");
+                });
+        }
+    }
+
     //消息提示关闭初始化
     $('.message .close').on('click', function () {
         $(this).closest('.message').transition('fade');
@@ -216,5 +231,6 @@
             ;
         });
 </script>
+
 </body>
 </html>

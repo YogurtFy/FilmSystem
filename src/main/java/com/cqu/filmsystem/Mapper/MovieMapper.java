@@ -55,7 +55,7 @@ public interface MovieMapper {
 
     int update(Movie movie);
 
-    int delete(int id);
+    int deleteById(long id);
 
 
     List<Movie> selectByTagId(Integer tagId);

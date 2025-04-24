@@ -8,13 +8,16 @@ import com.cqu.filmsystem.Service.MovieService;
 import com.cqu.filmsystem.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -249,6 +252,15 @@ public class MovieAdminController {
         return "redirect:";
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteMovie(@PathVariable("id") Long id) {
+        int success = movieService.deleteMovieById(id);
+        if (success == 1) {
+            return ResponseEntity.ok("删除成功");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("电影不存在");
+        }
+    }
 
     @RequestMapping("/")
     public String toadmin() {

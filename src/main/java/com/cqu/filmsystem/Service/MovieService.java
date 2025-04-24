@@ -40,18 +40,13 @@ public interface MovieService {
     //查询导演
     List<Movie> selectDirector();
 
-
-
     PageInfo<Movie> selectAll(Integer pageNum, Integer pageSize, String title, String director);
 
     int add(Movie movie);
 
-
-
-    int delete(int id);
-
-
     int update(Movie blog);
 
     PageInfo<Movie> selectByTagId(Integer pageNum, Integer pageSize, Integer tagId);
+
+    int deleteMovieById(Long id);
 }
